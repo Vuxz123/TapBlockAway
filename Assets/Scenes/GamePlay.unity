@@ -387,6 +387,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 534527624}
+  - component: {fileID: 534527625}
   m_Layer: 0
   m_Name: CameraRoot
   m_TagString: Untagged
@@ -410,6 +411,23 @@ Transform:
   - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &534527625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534527623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1acf41af660a4c68bb655992844d47c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraDistance: -10
+  maxCameraDistance: -5
+  minCameraDistance: -20
+  mainCamera: {fileID: 330585545}
+  cameraRoot: {fileID: 534527624}
 --- !u!1001 &620515075
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -637,6 +655,11 @@ PrefabInstance:
       propertyPath: cameraRoot
       value: 
       objectReference: {fileID: 534527624}
+    - target: {fileID: 3529774001547808244, guid: 39e06a9295ba87f4c93875f3880838d6,
+        type: 3}
+      propertyPath: cameraController
+      value: 
+      objectReference: {fileID: 534527625}
     - target: {fileID: 4018414179147781742, guid: 39e06a9295ba87f4c93875f3880838d6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -696,11 +719,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GamePlay
-      objectReference: {fileID: 0}
-    - target: {fileID: 7532107918623957199, guid: 39e06a9295ba87f4c93875f3880838d6,
-        type: 3}
-      propertyPath: cubeMoveSpeed
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

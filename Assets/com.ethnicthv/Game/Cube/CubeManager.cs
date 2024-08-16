@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace com.ethnicthv.Game.Cube
 {
@@ -14,25 +15,16 @@ namespace com.ethnicthv.Game.Cube
         public GameObject cubePrefab;
         public int cubeMoveDistance = 10;
         public int cubeMoveSpeed = 2;
+        public LayerMask enableLayerMask = 0;
+        public int enableLayer = 0;
+        public int disableLayer = 0;
 
         public float cubeMoveDuration => cubeMoveDistance / (float)cubeMoveSpeed;
 
-        public int boundX
+        public int bound
         {
             get => _bounds.Item1;
-            set => _bounds.Item1 = value;
-        }
-
-        public int boundY
-        {
-            get => _bounds.Item2;
-            set => _bounds.Item2 = value;
-        }
-
-        public int boundZ
-        {
-            get => _bounds.Item3;
-            set => _bounds.Item3 = value;
+            set => _bounds = (value, value, value);
         }
 
         private CubePoll _cubePoll;
@@ -77,35 +69,47 @@ namespace com.ethnicthv.Game.Cube
 
         #endregion
 
-        public bool CreateCube(int x, int y, int z, CubeDirection direction)
+        #region Cube Contruction
+
+        public CubeController PrepareCube(int x, int y, int z, CubeDirection direction)
         {
             var key = (x, y, z);
             
-            if (_cubeList.ContainsKey(key)) return false;
+            if (_cubeList.TryGetValue(key, out var prepareCube)) return prepareCube;
             
             var cube = _cubePoll.GetCubeObject().GetComponent<CubeController>();
             
             cube.transform.position = new Vector3(x, y, z);
             cube.Setup(key, GetNearbyColor(x, y, z), direction);
             _cubeList.Add(key, cube);
-            cube.Appear();
+
+            return cube;
+        }
+
+        public bool CreateCube(int x, int y, int z, CubeDirection direction, bool show = false)
+        {
+            var cube = PrepareCube(x, y, z, direction);
+
+            if (show)
+            {
+                cube.Appear();
+            }
             
             return true;
         }
 
-        public void DestroyCube(int x, int y, int z, bool fade = false)
+        public void DestroyCube(int x, int y, int z, bool animated = true)
         {
             var key = (x, y, z);
             
             if (!_cubeList.Remove(key, out var value)) return;
 
-            if (fade)
+            if (animated)
             {
-                value.FadeOut(onComplete: OnComplete); 
+                value.Disappear(OnComplete);
                 return;
             }
-            
-            value.Disappear(OnComplete);
+            OnComplete();
             
             return;
             void OnComplete()
@@ -113,6 +117,8 @@ namespace com.ethnicthv.Game.Cube
                 _cubePoll.ReturnCube(value.gameObject);
             }
         }
+
+        #endregion
 
         #region Utility
         
@@ -189,12 +195,13 @@ namespace com.ethnicthv.Game.Cube
         public void ReturnCube(GameObject cube)
         {
             _pool.Enqueue(cube);
-            Debug.LogError(_pool.Count);
         }
 
         private GameObject InstantiateCube()
         {
-            return _factory(_container,_prefab);
+            var go = _factory(_container, _prefab);
+            go.SetActive(false);
+            return go;
         }
     }
 }

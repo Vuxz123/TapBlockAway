@@ -1,6 +1,7 @@
 using System;
 using com.ethnicthv.Game;
 using com.ethnicthv.Game.Cube;
+using com.ethnicthv.Game.Map;
 using UnityEditor;
 using UnityEngine;
 
@@ -38,6 +39,16 @@ namespace com.ethnicthv.Editor.Cube
                 //error message
                 GUILayout.Label("Please add GamePlay to the scene", EditorStyles.boldLabel);
                 return;
+            }
+
+            GUILayout.Label("Waiting for map", EditorStyles.boldLabel);
+            if (GamePlayManager.instance.mapManager.isMapLoaded)
+            {
+                GUILayout.Label("Map is loaded", EditorStyles.boldLabel);
+                if(GUILayout.Button("Show Map"))
+                {
+                    GamePlayManager.instance.mapManager.ShowMap();
+                }
             }
             
             _x = EditorGUILayout.IntField("X", _x, GUILayout.MinWidth(20));

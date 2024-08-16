@@ -11,10 +11,19 @@ namespace com.ethnicthv.Game.Map
 {
     public class MapManager : MonoBehaviour
     {
-        private static Camera _camera;
+        [SerializeField] private int numberOfCubesShowedPerFrame = 10;
         
         public bool isMapLoaded { get; private set; }
         
+        // <-- cache -->
+        private PriorityQueue<CubeController, float> _cubeQueue;
+        // <-- end -->
+
+        private void Awake()
+        {
+            _cubeQueue = new PriorityQueue<CubeController, float>(new CubeComparer());
+        }
+
         public void LoadMap(string part)
         {
             isMapLoaded = false; // Note: re set the map loaded flag
@@ -50,7 +59,10 @@ namespace com.ethnicthv.Game.Map
                         var posX = x-a;
                         var posY = y-a;
                         var posZ = z-a;
-                        CubeManager.instance.CreateCube(posX,posY,posZ,cube);
+                        
+                        //calculate the distance from the center
+                        var distance = Vector3.Distance(Vector3.zero, new Vector3(posX, posY, posZ));
+                        _cubeQueue.Enqueue(CubeManager.instance.PrepareCube(posX, posY, posZ, cube), distance);
                     }
                 }
             }
@@ -58,32 +70,57 @@ namespace com.ethnicthv.Game.Map
             #endregion
 
             #region Camera Setup
-
-            GamePlayManager.instance.cameraDistance = mapJson.size*2.2f;
-            _camera!.transform.position = new Vector3(0,0,-mapJson.size*2.2f);
+            
+            var cameraController = GamePlayManager.instance.cameraController;
+            cameraController.cameraDist = - mapJson.size*2.2f;
+            cameraController.maxCameraDistance = - mapJson.size*1.2f;
+            cameraController.minCameraDistance = - mapJson.size*3f;
+            cameraController.cameraShift = mapJson.size % 2 == 0 ? true : false;
+            
             // set fog 
             RenderSettings.fog = true;
             RenderSettings.fogColor = Color.white;
             RenderSettings.fogMode = FogMode.Exponential;
             RenderSettings.fogDensity = 0.01f;
+            
             // set fog distance
             RenderSettings.fogStartDistance = a +7;
             #endregion
 
             #region Cube Manager Setup
             
-            CubeManager.instance.boundX = a + 10;
-            CubeManager.instance.boundY = a + 10;
-            CubeManager.instance.boundZ = a + 10;
+            CubeManager.instance.bound = a + 10;
 
             #endregion
             
             isMapLoaded = true; // Note: set the map loaded flag
         }
-
-        private void Start()
+        
+        public void ShowMap()
         {
-            _camera = Camera.main;
+            StartCoroutine(ShowMapCoroutine());
+        }
+        
+        private IEnumerator ShowMapCoroutine()
+        {
+            var count = 0;
+            while (_cubeQueue.Count > 0)
+            {
+                count++;
+                var cube = _cubeQueue.Dequeue();
+                cube.Appear();
+                if (count < numberOfCubesShowedPerFrame) continue;
+                count = 0;
+                yield return new WaitForSeconds(0.001f);
+            }
+        }
+        
+        private class CubeComparer : IComparer<float>
+        {
+            public int Compare(float x, float y)
+            {
+                return x.CompareTo(y);
+            }
         }
     }
 }

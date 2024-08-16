@@ -26,8 +26,7 @@ namespace com.ethnicthv.Game.Cube
 
     public class CubeController : MonoBehaviour
     {
-        public string enableTag = "Cube";
-        public string disableTag = "DisableCube";
+        public float appearDuration = 0.5f;
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private CubeState state = CubeState.Static;
 
@@ -91,18 +90,27 @@ namespace com.ethnicthv.Game.Cube
 
         public void Appear()
         {
+            // Note: prepare the cube to appear
             transform.rotation = Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
             transform.localScale = Vector3.zero;
+            
             gameObject.SetActive(true);
 
-            transform.DORotate(Directions[_direction].eulerAngles, 1);
-            transform.DOScale(1, 1).SetEase(Ease.OutBounce).OnComplete(() => { gameObject.tag = enableTag; });
+            // Note: start the appear animation
+            transform.DORotate(Directions[_direction].eulerAngles, appearDuration);
+            transform.DOScale(1, appearDuration).SetEase(Ease.OutBounce)
+                .OnComplete(() =>
+                {
+                    gameObject.layer = CubeManager.instance.enableLayer; // Note: set the cube layer for interaction
+                });
         }
 
         public void Disappear(Action onComplete = null)
         {
-            //set random rotation
-            gameObject.tag = disableTag;
+            // Note: set the cube layer for disable
+            gameObject.layer = CubeManager.instance.disableLayer;
+            
+            // Note: start the disappear animation
             transform.DOScale(0f, 1).SetEase(Ease.InBack).OnComplete(() =>
             {
                 gameObject.SetActive(false);
@@ -113,6 +121,10 @@ namespace com.ethnicthv.Game.Cube
 
         public void FadeOut(float duration = 1, Action onComplete = null)
         {
+            // Note: set the cube layer for disable
+            gameObject.layer = CubeManager.instance.disableLayer;
+            
+            // Note: start the fade out animation
             DOTween.ToAlpha(
                 () => meshRenderer.material.GetColor(Color1),
                 x => meshRenderer.material.SetColor(Color1, x),
@@ -128,10 +140,21 @@ namespace com.ethnicthv.Game.Cube
         public void Move()
         {
             if (cubeState is CubeState.Bouncing or CubeState.Moving) return;
-            cubeState = CubeState.Moving;
+            
+            Debug.Log($"Move Cube: {_key.Item1}, {_key.Item2}, {_key.Item3}, {_direction}");
 
             var cubes = CubeUtil.GetCubeOn(_key, _direction);
             var direction = CubeUtil.DirectionMapping[(int)_direction];
+            
+            Debug.Log($"Direction: {direction} - {_direction}");
+
+            var name = "";
+            foreach (var cube in cubes)
+            {
+                name += cube._key + " ";
+            }
+            
+            Debug.Log($"Cubes: {cubes.Count}");
 
             var bounceObject = this;
             var goTo = transform.localPosition + direction * CubeManager.instance.cubeMoveDistance;
@@ -140,7 +163,6 @@ namespace com.ethnicthv.Game.Cube
             {
                 if (cube.state is not (CubeState.Bouncing or CubeState.Static)) continue;
                 goTo = cube.transform.position - direction;
-                Debug.Log(cube.transform.position);
                 obstacle = true;
                 bounceObject = cube;
                 break;
@@ -148,14 +170,20 @@ namespace com.ethnicthv.Game.Cube
 
             if (obstacle)
             {
-                if (goTo == transform.localPosition)
+                var temp1 = new Vector3(bounceObject._key.Item1, bounceObject._key.Item2, bounceObject._key.Item3) - direction;
+                if (temp1 == transform.localPosition)
                 {
+                    Debug.Log("Bounce");
                     Bounce(direction);
                     return;
                 }
 
+                Debug.Log($"Move and Bounce: goTo {goTo} from {_key} direction {direction}");
+                cubeState = CubeState.Bouncing;
                 var temp = transform.position - goTo;
-                var moveValue = (float)CubeUtil.GetMovingValue((int)temp.x, (int)temp.y, (int)temp.x, _direction);
+                Debug.Log($"Temp: {temp}");
+                var moveValue = temp.magnitude + 1;
+                Debug.Log($"Move Value: {moveValue} - Move Duration: {moveValue / CubeManager.instance.cubeMoveSpeed}");
                 transform.DOLocalMove(goTo, moveValue / CubeManager.instance.cubeMoveSpeed).SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
@@ -168,13 +196,21 @@ namespace com.ethnicthv.Game.Cube
                     });
                 return;
             }
-
-            meshRenderer.material.DOFade(0, CubeManager.instance.cubeMoveDuration / 2)
-                .SetDelay(CubeManager.instance.cubeMoveDuration / 2)
-                .OnComplete(() => { meshRenderer.material.DOFade(1, 0); });
+            
+            Debug.Log("Move");
+            // Note: set the cube layer for disable
+            cubeState = CubeState.Moving;
+            gameObject.layer = CubeManager.instance.disableLayer;
+            
             transform.DOLocalMove(goTo, CubeManager.instance.cubeMoveDuration)
-                .SetEase(Ease.Linear)
-                .OnComplete(() => { CubeManager.instance.DestroyCube(_key.Item1, _key.Item2, _key.Item3); });
+                .SetEase(Ease.Linear);
+            DOVirtual.DelayedCall(CubeManager.instance.cubeMoveDuration / 2 - 0.05f, () =>
+            {
+                FadeOut(CubeManager.instance.cubeMoveDuration / 2, () =>
+                {
+                    CubeManager.instance.DestroyCube(_key.Item1, _key.Item2, _key.Item3, false);
+                });
+            });
         }
 
 

@@ -83,7 +83,12 @@ MonoBehaviour:
   cubePrefab: {fileID: 6909807755803685146, guid: 0cdd2691a311a0d4791d30dc18abb4ca,
     type: 3}
   cubeMoveDistance: 20
-  cubeMoveSpeed: 2
+  cubeMoveSpeed: 7
+  enableLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  enableLayer: 3
+  disableLayer: 0
 --- !u!114 &4499516146788302776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e314a3587fae2f247808e2339c086b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberOfCubesShowedPerFrame: 20
 --- !u!114 &3529774001547808244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,8 +116,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tapCooldown: 0.5
   mapManager: {fileID: 4499516146788302776}
-  cameraRoot: {fileID: 0}
-  cameraDistance: 10
+  cameraController: {fileID: 0}
+  mapSize: 10
 --- !u!114 &175127267286267874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,3 +130,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ebc32a010334d38bb6c5218da8e0e61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxZoomDelta: 20
+  dragThreshold: 0.1

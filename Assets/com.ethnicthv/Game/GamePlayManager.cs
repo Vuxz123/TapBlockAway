@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using com.ethnicthv.Game.Map;
 using UnityEngine;
 
@@ -10,16 +12,16 @@ namespace com.ethnicthv.Game
         
         [Space(10)]
         [Header("Setup")]
-        [SerializeField] private MapManager mapManager;
-        public Transform cameraRoot;
+        public MapManager mapManager;
+        public CameraController cameraController;
         
         public static GamePlayManager instance { get; private set; }
-        
+        public Transform cameraRoot => cameraController.cameraRoot;
+        public float cameraDistance { set => cameraController.cameraDist = value; }
+
         private InputEventListener _inputEventListener;
         
         [HideInInspector] public int mapSize = 10;
-        [HideInInspector] public float cameraDistance = 10;
-        public Vector3 cameraVector => new Vector3(0,0,-cameraDistance);
         
         private void Awake()
         {
@@ -29,10 +31,19 @@ namespace com.ethnicthv.Game
         private void Start()
         {
             Debug.Log("GamePlayManager Start");
-            _inputEventListener = new GamePlayInputEventListener(Camera.main);
+            _inputEventListener = new GamePlayInputEventListener(cameraController);
             _inputEventListener.Setup();
             
             mapManager.LoadMap("Assets/com.ethnicthv/R/Map/map1.json");
+            
+            StartCoroutine(ShowMap());
+        }
+        
+        private IEnumerator ShowMap()
+        {
+            yield return new WaitUntil(() => mapManager.isMapLoaded);
+            
+            mapManager.ShowMap();
         }
         
     }
