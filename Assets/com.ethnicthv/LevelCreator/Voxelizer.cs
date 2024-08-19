@@ -18,6 +18,8 @@ namespace com.ethnicthv.LevelCreator
         public int sizeX;
         public int sizeY;
         public int sizeZ;
+
+        public int size => Mathf.Max(sizeX, sizeY, sizeZ);
         
         public List<Vector3Int> gridPoints
         {

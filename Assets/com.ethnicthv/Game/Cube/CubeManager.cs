@@ -86,7 +86,7 @@ namespace com.ethnicthv.Game.Cube
             return cube;
         }
 
-        public bool CreateCube(int x, int y, int z, CubeDirection direction, bool show = false)
+        public CubeController CreateCube(int x, int y, int z, CubeDirection direction, bool show = false)
         {
             var cube = PrepareCube(x, y, z, direction);
 
@@ -95,7 +95,7 @@ namespace com.ethnicthv.Game.Cube
                 cube.Appear();
             }
             
-            return true;
+            return cube;
         }
 
         public void DestroyCube(int x, int y, int z, bool animated = true)
@@ -109,6 +109,9 @@ namespace com.ethnicthv.Game.Cube
                 value.Disappear(OnComplete);
                 return;
             }
+            
+            value.gameObject.SetActive(false);
+            transform.localScale = Vector3.one;
             OnComplete();
             
             return;

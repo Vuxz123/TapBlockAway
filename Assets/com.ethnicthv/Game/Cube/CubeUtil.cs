@@ -5,7 +5,7 @@ namespace com.ethnicthv.Game.Cube
 {
     public static class CubeUtil
     {
-        public static List<CubeController> GetCubeOn((int, int, int) posStart, CubeDirection direction)
+        public static List<CubeController> GetCubeOn(int mapSize, (int, int, int) posStart, CubeDirection direction)
         {
             // get the cube that on the direction of the cube
             var (x, y, z) = posStart;
@@ -15,7 +15,7 @@ namespace com.ethnicthv.Game.Cube
             var start = GetMovingValue(x, y, z, direction);
 
             var step = SignMap[(int)direction];
-            var max = GamePlayManager.instance.mapSize / 2 * step + step;
+            var max = mapSize / 2 * step + step;
 
             var cubes = new List<CubeController>();
             
@@ -28,6 +28,32 @@ namespace com.ethnicthv.Game.Cube
             }
 
             return cubes;
+        }
+        
+        public static int GetCubeOnNonAlloc(int mapSize, (int, int, int) posStart, CubeDirection direction, CubeController[] returnArray)
+        {
+            // get the cube that on the direction of the cube
+            var (x, y, z) = posStart;
+            var currentVector = new Vector3(x, y, z);
+            var directionVector = DirectionMapping[(int)direction];
+
+            var start = GetMovingValue(x, y, z, direction);
+
+            var step = SignMap[(int)direction];
+            var max = mapSize / 2 * step + step;
+
+            var count = 0;
+            
+            for (var i = start + step; i != max; i += step)
+            {
+                currentVector += directionVector;
+                var cube = CubeManager.instance.GetCube(currentVector);
+                if (!cube) continue;
+                returnArray[count] = cube;
+                count++;
+            }
+
+            return count;
         }
 
         public static int GetMovingValue(int x, int y, int z, CubeDirection direction)

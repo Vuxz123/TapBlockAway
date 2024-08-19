@@ -26,6 +26,9 @@ namespace com.ethnicthv.Game.Map
 
         public void LoadMap(string part)
         {
+#if UNITY_EDITOR
+            Debug.Log("Loading Map: " + part);
+#endif
             isMapLoaded = false; // Note: re set the map loaded flag
             var mapText = Addressables.LoadAssetAsync<TextAsset>(part);
             StartCoroutine(BeginBuildMap(mapText));
@@ -55,7 +58,9 @@ namespace com.ethnicthv.Game.Map
                     {
                         var index = x + y * mapJson.size + z * mapJson.size * mapJson.size;
                         if (index >= mapJson.map.Length) continue;
-                        var cube = (CubeDirection) mapJson.map[index];
+                        var pointData = mapJson.map[index];
+                        if (pointData == -1) continue; // Note: -1 means no cube (null)
+                        var cube = (CubeDirection) pointData;
                         var posX = x-a;
                         var posY = y-a;
                         var posZ = z-a;
@@ -75,7 +80,7 @@ namespace com.ethnicthv.Game.Map
             cameraController.cameraDist = - mapJson.size*2.2f;
             cameraController.maxCameraDistance = - mapJson.size*1.2f;
             cameraController.minCameraDistance = - mapJson.size*3f;
-            cameraController.cameraShift = mapJson.size % 2 == 0 ? true : false;
+            cameraController.cameraShift = mapJson.size % 2 == 0;
             
             // set fog 
             RenderSettings.fog = true;
@@ -94,6 +99,9 @@ namespace com.ethnicthv.Game.Map
             #endregion
             
             isMapLoaded = true; // Note: set the map loaded flag
+#if UNITY_EDITOR
+            Debug.Log("Map Loaded");
+#endif
         }
         
         public void ShowMap()

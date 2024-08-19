@@ -30,14 +30,26 @@ namespace com.ethnicthv.Game.Cube
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private CubeState state = CubeState.Static;
 
+        public CubeDirection direction
+        {
+            set
+            {
+                _direction = value;
+                SetupDirection(_direction);
+            }
+            get => _direction;
+        }
+        
         public CubeState cubeState
         {
             get => state;
             private set => state = value;
         }
+        
+        public (int, int, int) key => _key;
 
         private (int, int, int) _key;
-        private CubeDirection _direction;
+        [SerializeField] private CubeDirection _direction;
 
         public Color cubeColor
         {
@@ -143,7 +155,7 @@ namespace com.ethnicthv.Game.Cube
             
             Debug.Log($"Move Cube: {_key.Item1}, {_key.Item2}, {_key.Item3}, {_direction}");
 
-            var cubes = CubeUtil.GetCubeOn(_key, _direction);
+            var cubes = CubeUtil.GetCubeOn(GamePlayManager.instance.mapSize, _key, _direction);
             var direction = CubeUtil.DirectionMapping[(int)_direction];
             
             Debug.Log($"Direction: {direction} - {_direction}");
