@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
 namespace com.ethnicthv.Editor.LevelCreator
@@ -13,13 +15,6 @@ namespace com.ethnicthv.Editor.LevelCreator
         public static void ShowWindow()
         {
             var w = GetWindow<GenerateMap>("Generate Map");
-            EditorApplication.playModeStateChanged += state =>
-            {
-                if (state == PlayModeStateChange.EnteredPlayMode)
-                {
-                    w._mapGen = FindObjectOfType<PlayableMapGenerator>();
-                }
-            };
         }
         
         public void OnGUI()
@@ -34,19 +29,41 @@ namespace com.ethnicthv.Editor.LevelCreator
             {
                 GUILayout.Label("Please enter play mode to generate map", EditorStyles.boldLabel);
             }
+            else if (_directory == "")
+            {
+                GUILayout.Label("Please enter a directory", EditorStyles.boldLabel);
+            }
             else
             {
                 if (GUILayout.Button("Generate Map"))
                 {
+                    _mapGen = FindObjectOfType<PlayableMapGenerator>();
                     // get all files in the directory
                     var files = System.IO.Directory.GetFiles(_directory);
-                    foreach (var file in files)
+                    // filter out non-json files
+                    files = System.Array.FindAll(files, s => s.EndsWith(".json"));
+                    // replace / with \ in the path
+                    for (var i = 0; i < files.Length; i++)
                     {
-                        Debug.Log("Reading Map File: " + file);
-                        _mapGen.Directory = file;
-                        _mapGen.Generate();
-                        _mapGen.SaveMapDataWhenDone();
+                        files[i] = files[i].Replace("\\", "/");
                     }
+                    _mapGen.GenerateMaps(files);
+                }
+            }
+            
+            if (GUILayout.Button("Update Addressable"))
+            {
+                //Mark all file in the directory as addressable
+                AddressableAssetSettings.BuildPlayerContent(out var result);
+                var success = string.IsNullOrEmpty(result.Error);
+
+                if (!success)
+                {
+                    Debug.LogError("Addressables build error encountered: " + result.Error);
+                }
+                else
+                {
+                    Debug.Log("Addressables build success");
                 }
             }
         }

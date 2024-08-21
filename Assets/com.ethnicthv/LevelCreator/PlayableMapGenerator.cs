@@ -12,32 +12,27 @@ public class PlayableMapGenerator : MonoBehaviour
     [SerializeField] private string directory = "Assets/com.ethnicthv/R/Map/map1.json";
     [SerializeField] private GameObject cubePrefab;
 
-    public List<CubeController> cubes = new List<CubeController>();
-
-    public static Dictionary<(int, int, int), CubeDirectionChecker> cubeDirectionCheckers = new();
+    public List<CubeController> cubes = new();
 
     private Map _mapJson;
 
     private bool _doneGenerating;
-
-    public string Directory
-    {
-        get => directory;
-        set => directory = value;
-    }
+    private bool _available;
 
     public void Generate()
     {
+        _available = false;
+        _doneGenerating = false;
         foreach (var cubeController in cubes)
         {
             cubeManager.DestroyCube(cubeController.key.Item1, cubeController.key.Item2, cubeController.key.Item3,
                 false);
         }
 
-        StartCoroutine(GenerateCouroutine());
+        StartCoroutine(GenerateCoroutine());
     }
 
-    public IEnumerator GenerateCouroutine()
+    private IEnumerator GenerateCoroutine()
     {
         cubes.Clear();
         cubeManager.cubePrefab = cubePrefab;
@@ -45,6 +40,12 @@ public class PlayableMapGenerator : MonoBehaviour
         var operation = Addressables.LoadAssetAsync<TextAsset>(directory);
 
         yield return new WaitUntil(() => operation.IsDone);
+        if (operation.Status != UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+        {
+            Debug.LogError("Failed to load map");
+            yield break;
+        }
+
         Debug.Log("Map Loaded");
         var mapData = operation.Result;
 
@@ -90,7 +91,6 @@ public class PlayableMapGenerator : MonoBehaviour
         Debug.Log("Save Direction Data");
         var bounds = _mapJson.size / 2;
 
-        Debug.Log("Filling Map");
         cubes.ForEach((cube =>
         {
             // convert to map position
@@ -111,6 +111,7 @@ public class PlayableMapGenerator : MonoBehaviour
         System.IO.File.WriteAllText(path, json);
 
         Debug.Log("Map Saved");
+        _available = true;
     }
 
     public void SaveMapDataWhenDone()
@@ -122,5 +123,24 @@ public class PlayableMapGenerator : MonoBehaviour
     {
         yield return new WaitUntil(() => _doneGenerating);
         SaveMapData();
+    }
+
+    private IEnumerator GenerateMapsCoroutine(string[] files)
+    {
+        var count = 0;
+        foreach (var file in files)
+        {
+            directory = file;
+            Generate();
+            yield return SaveMapDataWhenDoneCoroutine();
+            yield return new WaitUntil(() => _available);
+            count++;
+        }
+        Debug.Log($"{count} Maps Generated");
+    }
+
+    public void GenerateMaps(string[] files)
+    {
+        StartCoroutine(GenerateMapsCoroutine(files));
     }
 }
