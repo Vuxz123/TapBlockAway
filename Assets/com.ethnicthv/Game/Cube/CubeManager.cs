@@ -30,6 +30,12 @@ namespace com.ethnicthv.Game.Cube
         private CubePoll _cubePoll;
         private readonly Dictionary<(int, int, int), CubeController> _cubeList = new();
         private (int, int, int) _bounds = (10, 10, 10);
+        
+        // <-- cache -->
+        private int _cubeCount;
+        // <-- end -->
+        
+        public event Action OnAllCubeMoved = () => { };
 
         private void Awake()
         {
@@ -57,14 +63,14 @@ namespace com.ethnicthv.Game.Cube
         public CubeController GetCube(int x, int y, int z)
         {
             var key = (x, y, z);
-            return _cubeList.GetValueOrDefault(key);
+            return GetCube(key);
         }
 
         [CanBeNull]
         public CubeController GetCube(Vector3 pos)
         {
             var key = ((int)pos.x, (int)pos.y, (int)pos.z);
-            return _cubeList.GetValueOrDefault(key);
+            return GetCube(key);
         }
 
         #endregion
@@ -82,7 +88,9 @@ namespace com.ethnicthv.Game.Cube
             cube.transform.position = new Vector3(x, y, z);
             cube.Setup(key, GetNearbyColor(x, y, z), direction);
             _cubeList.Add(key, cube);
-
+            
+            _cubeCount++;
+            
             return cube;
         }
 
@@ -103,7 +111,7 @@ namespace com.ethnicthv.Game.Cube
             var key = (x, y, z);
             
             if (!_cubeList.Remove(key, out var value)) return;
-
+            
             if (animated)
             {
                 value.Disappear(OnComplete);
@@ -122,9 +130,24 @@ namespace com.ethnicthv.Game.Cube
         }
 
         #endregion
+        
+        public void ResetCubeCache()
+        {
+            _cubeCount = 0;
+            _cubeList.Clear();
+        }
+        
+        public void CallMoveCube()
+        {
+            _cubeCount--;
+        }
+        
+        public int GetCubeCount()
+        {
+            return _cubeCount;
+        }
 
         #region Utility
-        
         private Color[] GetNearbyColor(int x, int y, int z)
         {
             var (nb, count) = GetNearbyCubes(x, y, z);
@@ -165,6 +188,11 @@ namespace com.ethnicthv.Game.Cube
         };
 
         #endregion
+
+        public void CallAllCubeMoved()
+        {
+            OnAllCubeMoved();
+        }
     }
     
     public class CubePoll

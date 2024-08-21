@@ -114,8 +114,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b9fb59143540a6a938d3700b2e332b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  category: Normal
+  level: 0
   tapCooldown: 0.5
   mapManager: {fileID: 4499516146788302776}
+  cubeManager: {fileID: 7532107918623957199}
   cameraController: {fileID: 0}
   mapSize: 10
 --- !u!114 &175127267286267874

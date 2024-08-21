@@ -72,13 +72,13 @@ namespace com.ethnicthv.Game.Cube
             meshRenderer.material.color = Color.white;
         }
 
-        public void Setup((int, int, int) key, Color[] nearColor, CubeDirection direction)
+        public void Setup((int, int, int) cubeKey, Color[] nearColor, CubeDirection dir)
         {
-            _key = key;
-            gameObject.name = $"Cube_{key.Item1}_{key.Item2}_{key.Item3}_{direction}";
+            _key = cubeKey;
+            gameObject.name = $"Cube_{cubeKey.Item1}_{cubeKey.Item2}_{cubeKey.Item3}_{dir}";
             SetupColor(nearColor);
-            SetupDirection(direction);
-            _direction = direction;
+            SetupDirection(dir);
+            _direction = dir;
         }
 
         private void SetupColor(Color[] nearColor)
@@ -91,9 +91,9 @@ namespace com.ethnicthv.Game.Cube
             }
         }
 
-        private void SetupDirection(CubeDirection direction)
+        private void SetupDirection(CubeDirection dir)
         {
-            transform.rotation = Directions[direction];
+            transform.rotation = Directions[dir];
         }
 
         #endregion
@@ -152,54 +152,47 @@ namespace com.ethnicthv.Game.Cube
         public void Move()
         {
             if (cubeState is CubeState.Bouncing or CubeState.Moving) return;
-            
-            Debug.Log($"Move Cube: {_key.Item1}, {_key.Item2}, {_key.Item3}, {_direction}");
 
             var cubes = CubeUtil.GetCubeOn(GamePlayManager.instance.mapSize, _key, _direction);
-            var direction = CubeUtil.DirectionMapping[(int)_direction];
-            
-            Debug.Log($"Direction: {direction} - {_direction}");
-
-            var name = "";
-            foreach (var cube in cubes)
-            {
-                name += cube._key + " ";
-            }
-            
-            Debug.Log($"Cubes: {cubes.Count}");
+            var dir = CubeUtil.DirectionMapping[(int)_direction];
 
             var bounceObject = this;
-            var goTo = transform.localPosition + direction * CubeManager.instance.cubeMoveDistance;
+            var goTo = transform.localPosition + dir * CubeManager.instance.cubeMoveDistance;
             var obstacle = false;
             foreach (var cube in cubes)
             {
                 if (cube.state is not (CubeState.Bouncing or CubeState.Static)) continue;
-                goTo = cube.transform.position - direction;
+                goTo = cube.transform.position - dir;
                 obstacle = true;
                 bounceObject = cube;
                 break;
             }
+            
+            // Note: check if current cube is last cube
+            var cubeCount = CubeManager.instance.GetCubeCount();
+            Debug.Log("Cube Count: " + cubeCount);
+            var lastCube = cubeCount == 1;
 
             if (obstacle)
             {
-                var temp1 = new Vector3(bounceObject._key.Item1, bounceObject._key.Item2, bounceObject._key.Item3) - direction;
+                var temp1 = new Vector3(bounceObject._key.Item1, bounceObject._key.Item2, bounceObject._key.Item3) - dir;
                 if (temp1 == transform.localPosition)
                 {
-                    Debug.Log("Bounce");
-                    Bounce(direction);
+                    // Note: Bounce
+                    
+                    Bounce(dir);
                     return;
                 }
 
-                Debug.Log($"Move and Bounce: goTo {goTo} from {_key} direction {direction}");
+                // Note: Move and Bounce
+                
                 cubeState = CubeState.Bouncing;
                 var temp = transform.position - goTo;
-                Debug.Log($"Temp: {temp}");
                 var moveValue = temp.magnitude + 1;
-                Debug.Log($"Move Value: {moveValue} - Move Duration: {moveValue / CubeManager.instance.cubeMoveSpeed}");
                 transform.DOLocalMove(goTo, moveValue / CubeManager.instance.cubeMoveSpeed).SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
-                        bounceObject.Bounce(direction);
+                        bounceObject.Bounce(dir);
                         transform.DOLocalMove(
                                 new Vector3(_key.Item1, _key.Item2, _key.Item3),
                                 0.5f)
@@ -209,7 +202,10 @@ namespace com.ethnicthv.Game.Cube
                 return;
             }
             
-            Debug.Log("Move");
+            // Note: Move
+            
+            CubeManager.instance.CallMoveCube(); // Note: invoke Move event
+            
             // Note: set the cube layer for disable
             cubeState = CubeState.Moving;
             gameObject.layer = CubeManager.instance.disableLayer;
@@ -221,28 +217,29 @@ namespace com.ethnicthv.Game.Cube
                 FadeOut(CubeManager.instance.cubeMoveDuration / 2, () =>
                 {
                     CubeManager.instance.DestroyCube(_key.Item1, _key.Item2, _key.Item3, false);
+                    if (lastCube) CubeManager.instance.CallAllCubeMoved();
                 });
             });
         }
 
 
-        private void Bounce(Vector3 direction, bool recursive = true)
+        private void Bounce(Vector3 dir, bool recursive = true)
         {
             if (cubeState == CubeState.Bouncing) return;
             cubeState = CubeState.Bouncing;
             transform.DOKill();
-            transform.DOLocalMove(transform.localPosition + direction * 0.2f, 0.2f)
+            transform.DOLocalMove(transform.localPosition + dir * 0.2f, 0.2f)
                 .SetEase(Ease.OutCirc).SetLoops(2, LoopType.Yoyo).OnComplete(() => { cubeState = CubeState.Static; });
             if (recursive)
             {
                 DOVirtual.DelayedCall(0.03f, () =>
                 {
-                    var nextBounce = (_key.Item1 + (int)direction.x, _key.Item2 + (int)direction.y,
-                        _key.Item3 + (int)direction.z);
+                    var nextBounce = (_key.Item1 + (int)dir.x, _key.Item2 + (int)dir.y,
+                        _key.Item3 + (int)dir.z);
                     var nextCube = CubeManager.instance.GetCube(nextBounce);
                     if (nextCube == null) return;
                     if (nextCube.cubeState != CubeState.Static) return;
-                    nextCube.Bounce(direction);
+                    nextCube.Bounce(dir);
                 });
             }
         }

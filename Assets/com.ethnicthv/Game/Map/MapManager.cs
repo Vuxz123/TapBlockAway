@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using com.ethnicthv.Game.Cube;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -30,6 +28,7 @@ namespace com.ethnicthv.Game.Map
             Debug.Log("Loading Map: " + part);
 #endif
             isMapLoaded = false; // Note: re set the map loaded flag
+            StopAllCoroutines();
             var mapText = Addressables.LoadAssetAsync<TextAsset>(part);
             StartCoroutine(BeginBuildMap(mapText));
         }
@@ -49,7 +48,9 @@ namespace com.ethnicthv.Game.Map
             var a = mapJson.size/2;
 
             #region Cube Creation
-
+            
+            CubeManager.instance.ResetCubeCache(); // Note: reset the cube cache
+            
             for (var x = 0; x < mapJson.size; x++)
             {
                 for (var y = 0; y < mapJson.size; y++)
@@ -77,9 +78,9 @@ namespace com.ethnicthv.Game.Map
             #region Camera Setup
             
             var cameraController = GamePlayManager.instance.cameraController;
-            cameraController.cameraDist = - mapJson.size*2.2f;
             cameraController.maxCameraDistance = - mapJson.size*1.2f;
             cameraController.minCameraDistance = - mapJson.size*3f;
+            cameraController.cameraDist = - mapJson.size*2.2f;
             cameraController.cameraShift = mapJson.size % 2 == 0;
             
             // set fog 
@@ -87,9 +88,6 @@ namespace com.ethnicthv.Game.Map
             RenderSettings.fogColor = Color.white;
             RenderSettings.fogMode = FogMode.Exponential;
             RenderSettings.fogDensity = 0.01f;
-            
-            // set fog distance
-            RenderSettings.fogStartDistance = a +7;
             #endregion
 
             #region Cube Manager Setup

@@ -1,5 +1,7 @@
+#define TEST_GAMEPLAY
+
 using System.Collections;
-using System.Collections.Generic;
+using com.ethnicthv.Game.Cube;
 using com.ethnicthv.Game.Map;
 using UnityEngine;
 
@@ -7,9 +9,16 @@ namespace com.ethnicthv.Game
 {
     public class GamePlayManager : MonoBehaviour
     {
+        [Header("Gameplay Properties")]
+        public string category = "Normal";
+        public int level = 0;
+        
         [Header("Input Properties")] public float tapCooldown = 0.5f;
 
-        [Space(10)] [Header("Setup")] public MapManager mapManager;
+        [Space(10)] 
+        [Header("Setup")] 
+        public MapManager mapManager;
+        public CubeManager cubeManager;
         public CameraController cameraController;
 
         public static GamePlayManager instance { get; private set; }
@@ -28,12 +37,17 @@ namespace com.ethnicthv.Game
             Debug.Log("GamePlayManager Start");
             _inputEventListener = new GamePlayInputEventListener(cameraController);
             _inputEventListener.Setup();
-
-#if !UNITY_EDITOR
-            mapManager.LoadMap("Assets/com.ethnicthv/R/Map/map1.json");
-            
-            StartCoroutine(ShowMap());
+#if TEST_GAMEPLAY
+            StartGame();
+            cubeManager.OnAllCubeMoved += OnFinishLevel;
 #endif
+        }
+        
+        private void OnFinishLevel()
+        {
+            Debug.Log("Finish Level");
+            level++;
+            StartGame();
         }
 
         private IEnumerator ShowMap()
@@ -41,6 +55,13 @@ namespace com.ethnicthv.Game
             yield return new WaitUntil(() => mapManager.isMapLoaded);
 
             mapManager.ShowMap();
+        }
+        
+        public void StartGame()
+        {
+            mapManager.LoadMap($"Assets/com.ethnicthv/R/Map/{category}/{level}.json");
+            
+            StartCoroutine(ShowMap());
         }
     }
 }
