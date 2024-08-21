@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace com.ethnicthv.Editor.LevelCreator
 {
@@ -24,6 +25,13 @@ namespace com.ethnicthv.Editor.LevelCreator
             
             _directory = EditorGUILayout.TextField("Directory", _directory);
             GUILayout.Label("Select the directory where the map files are located", EditorStyles.helpBox);
+            
+            if (SceneManager.GetActiveScene().name != "LevelGenerator")
+            {
+                GUILayout.Label("Please open LevelCreator scene", EditorStyles.boldLabel);
+                GUILayout.Label("Open in [Tools/Open Level Creator]", EditorStyles.helpBox);
+                return;
+            }
 
             if (!EditorApplication.isPlaying)
             {
