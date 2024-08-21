@@ -13,12 +13,6 @@ namespace com.ethnicthv.Game
         public CameraController cameraController;
 
         public static GamePlayManager instance { get; private set; }
-        public Transform cameraRoot => cameraController.cameraRoot;
-
-        public float cameraDistance
-        {
-            set => cameraController.cameraDist = value;
-        }
 
         private InputEventListener _inputEventListener;
 

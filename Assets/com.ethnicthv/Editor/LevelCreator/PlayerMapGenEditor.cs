@@ -17,6 +17,8 @@ namespace com.ethnicthv.Editor.LevelCreator
             var mapGen = (PlayableMapGenerator) target;
             if (GUILayout.Button("Generate Map"))
             {
+                EditorApplication.isPlaying = true;
+                
                 mapGen.Generate();
             }
             if (GUILayout.Button("Save Map Data"))

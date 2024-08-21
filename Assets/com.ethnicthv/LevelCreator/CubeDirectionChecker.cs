@@ -16,32 +16,44 @@ namespace com.ethnicthv.LevelCreator
 
         private int _mapSize;
         
-        private static CubeController[] _nextCubes = new CubeController[15];
+        private readonly CubeController[] _nextCubes = new CubeController[15];
         
-        private List<CubeDirection> _directions = new()
-        {
-            CubeDirection.Up,
-            CubeDirection.Down,
-            CubeDirection.Left,
-            CubeDirection.Right,
-            CubeDirection.Forward,
-            CubeDirection.Backward
-        };
-        
-        readonly Stack<CubeController> _stack = new();
-        
-        bool[] _checked;
+        private List<CubeDirection> _directions;
+
+        private readonly Stack<CubeController> _stack = new();
+
+        private bool[] _checked;
         
         public IEnumerator SetupPlayableDirection(int mapSize)
         {
+            //Debug.Log("<color=red>Start Checking </color>" + cubeController.key);
+            
             Array.Clear(_nextCubes, 0 , _nextCubes.Length);
             _mapSize = mapSize;
             _checked = new bool[mapSize * mapSize * mapSize];
+            
+            
             recheck:
+            
+            //Note: setup needed variables
+            _stack.Clear();
+            _directions = new List<CubeDirection>
+            {
+                CubeDirection.Up,
+                CubeDirection.Down,
+                CubeDirection.Left,
+                CubeDirection.Right,
+                CubeDirection.Forward,
+                CubeDirection.Backward
+            };
             Array.Fill(_checked, false);
+            
+            //Debug.Log($"<color=yellow>Start Checking </color>{cubeController.key} - {cubeController.direction}");
             var t = CheckDirectionAsync(cubeController.direction);
             yield return t.Yield();
-            Debug.Log($"Cube {cubeController.key} direction {cubeController.direction} is {t.Result}");
+            
+            //Debug.Log($"<color=yellow>End Checking </color>{cubeController.key} - {cubeController.direction} is {t.Result}");
+            
             if(!t.Result) yield break;
             yield return new WaitForSeconds(0.01f);
             
@@ -49,6 +61,7 @@ namespace com.ethnicthv.LevelCreator
             _directions.Remove(cubeController.direction);
             if (_directions.Count == 0)
             {
+                //Debug.LogError("<color=red> No Direction Available </color>");
                 goto end;
             }
 
@@ -58,57 +71,40 @@ namespace com.ethnicthv.LevelCreator
             end: ;
         }
         
-        public bool CheckDirection(CubeDirection direction, (int,int,int) rootKey)
-        {
-            {
-                var c = CubeUtil.GetCubeOnNonAlloc(_mapSize, cubeController.key, direction, _nextCubes);
-                for (var i = 0; i < c; i++)
-                {
-                    var controller = _nextCubes[i];
-                    _stack.Push(controller);
-                }
-            }
-            while (_stack.TryPop(out var cube) )
-            {
-                if (cube.key == rootKey) return true;
-                var c = CubeUtil.GetCubeOnNonAlloc(_mapSize, cubeController.key, direction, _nextCubes);
-                for (var i = 0; i < c; i++)
-                {
-                    var controller = _nextCubes[i];
-                    _stack.Push(controller);
-                }
-            }
-            return false;
-        }
         private Task<bool> CheckDirectionAsync(CubeDirection direction)
         {
             return Task.Run(() =>
             {
                 {
                     var c = CubeUtil.GetCubeOnNonAlloc(_mapSize, cubeController.key, direction, _nextCubes);
-                    Debug.Log("Number of Next Cubes: " + c);
-                    var temp = "";
+                    //Debug.Log("         Number of Next Cubes: " + c);
+                    //var temp = "";
                     for (var i = 0; i < c; i++)
                     {
-                        temp += _nextCubes[i].key + " ";
+                        //temp += _nextCubes[i].key + " ";
                         var controller = _nextCubes[i];
                         _stack.Push(controller);
                     }
-                    Debug.Log($"Next Cubes: {temp}");
-                    PrintStack();
-                    Debug.Log("Start Checking " + cubeController.key);
+                    //Debug.Log($"        Next Cubes: {temp}");
+                    //PrintStack();
                 }
                 while (_stack.TryPop(out var cube) )
                 {
-                    Debug.Log($"{cubeController.key} - Checking Cube: {cube.key} - stack: {_stack.Count}");
-                    PrintStack();
-                    if (cube.key == cubeController.key) return Task.FromResult(true);
+                    
+                    //Debug.Log($"<color=green>{cubeController.key} - Checking Cube: {cube.key}</color> - stack: {_stack.Count}");
+                    
+                    //PrintStack();
+                    if (cube.key == cubeController.key)
+                    {
+                        //Debug.Log("<color=blue>Found Root!!</color>");
+                        return Task.FromResult(true);
+                    }
                     var c = CubeUtil.GetCubeOnNonAlloc(_mapSize, cube.key, cube.direction, _nextCubes);
-                    Debug.Log("Number of Next Cubes: " + c);
-                    var temp = "";
+                    //Debug.Log("         Number of Next Cubes: " + c);
+                    //var temp = "";
                     for (var i = 0; i < c; i++)
                     {
-                        temp += _nextCubes[i].key + " ";
+                        //temp += _nextCubes[i].key + " ";
                         
                         var controller = _nextCubes[i];
                         
@@ -118,11 +114,16 @@ namespace com.ethnicthv.LevelCreator
                         var posY = controller.key.Item2 + _mapSize / 2;
                         var posZ = controller.key.Item3 + _mapSize / 2;
                         var index = posX + posY * _mapSize + posZ * _mapSize * _mapSize;
-                        if (_checked[index]) continue;
+                        if (_checked[index])
+                        {
+                            //Debug.Log($"       <color=purple>Already Checked</color> {controller.key}");
+                            continue;
+                        }
+                        //Debug.Log($"        <color=purple>Push</color> {controller.key}");
                         _checked[index] = true;
                         _stack.Push(controller);
                     }
-                    Debug.Log($"Next Cubes: {temp}");
+                    //Debug.Log($"        Next Cubes: {temp}");
                 }
                 return Task.FromResult(false);
             });
@@ -131,7 +132,7 @@ namespace com.ethnicthv.LevelCreator
         private void PrintStack()
         {
             var temp = _stack.Aggregate("", (current, cube) => current + (cube.key + " "));
-            Debug.Log($"Stack: {temp}");
+            Debug.Log($"        Stack: {temp}");
         }
     }
 }
