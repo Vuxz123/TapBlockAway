@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ab769a443b59864a9593f70cc4f41f2
+    m_Address: Assets/com.ethnicthv/R/Map/Normal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7dd2221c3899f704385905dc400e09c1, type: 2}
   m_SchemaSet:

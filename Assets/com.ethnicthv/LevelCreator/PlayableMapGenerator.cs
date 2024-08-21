@@ -9,7 +9,7 @@ using UnityEngine.AddressableAssets;
 public class PlayableMapGenerator : MonoBehaviour
 {
     [SerializeField] private CubeManager cubeManager;
-    [SerializeField] private string mapName = "map2";
+    [SerializeField] private string directory = "Assets/com.ethnicthv/R/Map/map1.json";
     [SerializeField] private GameObject cubePrefab;
 
     public List<CubeController> cubes = new List<CubeController>();
@@ -18,6 +18,14 @@ public class PlayableMapGenerator : MonoBehaviour
 
     private Map _mapJson;
 
+    private bool _doneGenerating;
+
+    public string Directory
+    {
+        get => directory;
+        set => directory = value;
+    }
+
     public void Generate()
     {
         foreach (var cubeController in cubes)
@@ -25,6 +33,7 @@ public class PlayableMapGenerator : MonoBehaviour
             cubeManager.DestroyCube(cubeController.key.Item1, cubeController.key.Item2, cubeController.key.Item3,
                 false);
         }
+
         StartCoroutine(GenerateCouroutine());
     }
 
@@ -32,8 +41,8 @@ public class PlayableMapGenerator : MonoBehaviour
     {
         cubes.Clear();
         cubeManager.cubePrefab = cubePrefab;
-        Debug.Log("Loading Map: " + mapName);
-        var operation = Addressables.LoadAssetAsync<TextAsset>("Assets/com.ethnicthv/R/Map/" + mapName + ".json");
+        Debug.Log("Loading Map: " + directory);
+        var operation = Addressables.LoadAssetAsync<TextAsset>(directory);
 
         yield return new WaitUntil(() => operation.IsDone);
         Debug.Log("Map Loaded");
@@ -73,6 +82,7 @@ public class PlayableMapGenerator : MonoBehaviour
         }
 
         Debug.Log("Map Generated");
+        _doneGenerating = true;
     }
 
     public void SaveMapData()
@@ -96,10 +106,21 @@ public class PlayableMapGenerator : MonoBehaviour
 
         Debug.Log(json);
 
-        var path = $"Assets/com.ethnicthv/R/Map/{mapName}.json";
+        var path = directory;
         Debug.Log($"Saving to {path}");
         System.IO.File.WriteAllText(path, json);
 
         Debug.Log("Map Saved");
+    }
+
+    public void SaveMapDataWhenDone()
+    {
+        StartCoroutine(SaveMapDataWhenDoneCoroutine());
+    }
+
+    private IEnumerator SaveMapDataWhenDoneCoroutine()
+    {
+        yield return new WaitUntil(() => _doneGenerating);
+        SaveMapData();
     }
 }
