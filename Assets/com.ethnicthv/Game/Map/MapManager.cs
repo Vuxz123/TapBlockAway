@@ -78,10 +78,16 @@ namespace com.ethnicthv.Game.Map
             #region Camera Setup
             
             var cameraController = GamePlayManager.instance.cameraController;
-            cameraController.maxCameraDistance = - mapJson.size*1.2f;
-            cameraController.minCameraDistance = - mapJson.size*3f;
+            
+            cameraController.maxCameraDist = - mapJson.size*1.2f;
+            cameraController.minCameraDist = - mapJson.size*3f;
             cameraController.cameraDist = - mapJson.size*2.2f;
-            cameraController.cameraShift = mapJson.size % 2 == 0;
+            
+            cameraController.cameraShiftX = !mapJson.shiftX;
+            cameraController.cameraShiftY = !mapJson.shiftY;
+            cameraController.cameraShiftZ = !mapJson.shiftZ;
+            
+            cameraController.cameraRoot.rotation = Quaternion.Euler(30, 45, 0);
             
             // set fog 
             RenderSettings.fog = true;

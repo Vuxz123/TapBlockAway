@@ -6,22 +6,43 @@ namespace com.ethnicthv.Game
     {
         [Header("Camera Properties")]
         [SerializeField] private float cameraDistance = -10;
-        public float maxCameraDistance = -5;
-        public float minCameraDistance = -20;
+        [SerializeField] private int upperBoundDistance = -3;
+        [SerializeField] private float maxCameraDistance = -5;
+        [SerializeField] private float minCameraDistance = -20;
         
         [Header("Setup")]
         public Camera mainCamera;
         public Transform cameraRoot;
         
         [Header("Debug")]
-        public  bool cameraShifted;
+        public bool cameraShiftedX;
+        public bool cameraShiftedY;
+        public bool cameraShiftedZ;
 
-        public bool cameraShift
+        public bool cameraShiftX
         {
             set
             {
-                cameraShifted = value;
-                mainCamera.transform.localPosition = new Vector3(cameraShifted ? -0.5f : 0, 0, cameraDistance);
+                cameraShiftedX = value;
+                cameraRoot.transform.localPosition = new Vector3(cameraShiftedX ? -0.5f : 0, cameraShiftedY ? -0.5f : 0, cameraShiftedZ ? -0.5f : 0);
+            }
+        }
+        
+        public bool cameraShiftY
+        {
+            set
+            {
+                cameraShiftedY = value;
+                cameraRoot.transform.localPosition = new Vector3(cameraShiftedX ? -0.5f : 0, cameraShiftedY ? -0.5f : 0, cameraShiftedZ ? -0.5f : 0);
+            }
+        }
+        
+        public bool cameraShiftZ
+        {
+            set
+            {
+                cameraShiftedZ = value;
+                cameraRoot.transform.localPosition = new Vector3(cameraShiftedX ? -0.5f : 0, cameraShiftedY ? -0.5f : 0, cameraShiftedZ ? -0.5f : 0);
             }
         }
 
@@ -31,8 +52,20 @@ namespace com.ethnicthv.Game
             set
             {
                 cameraDistance = Mathf.Clamp(value, minCameraDistance, maxCameraDistance);
-                mainCamera.transform.localPosition = new Vector3(cameraShifted ? -0.5f : 0, 0, cameraDistance);
+                mainCamera.transform.localPosition = new Vector3(0, 0, cameraDistance);
             }
+        }
+
+        public float maxCameraDist
+        {
+            get => maxCameraDistance;
+            set => maxCameraDistance = Mathf.Min(value, upperBoundDistance);
+        }
+        
+        public float minCameraDist
+        {
+            get => minCameraDistance;
+            set => minCameraDistance = value;
         }
 
         private void Start()

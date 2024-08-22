@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ namespace com.ethnicthv.Game
 {
     public class GamePlayInputEventSystem : MonoBehaviour
     {
+#if ENABLE_LEGACY_INPUT_MANAGER
         public float maxZoomDelta = 20;
         public float dragThreshold = 0.1f;
 
@@ -184,5 +186,6 @@ namespace com.ethnicthv.Game
                     break;
             }
         }
+#endif
     }
 }

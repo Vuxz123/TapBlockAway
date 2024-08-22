@@ -132,10 +132,18 @@ namespace com.ethnicthv.LevelCreator
                     }
                 }
             }
+
+            var xGap = (Math.Abs(maxX) - Math.Abs(minX));
+            var yGap = (Math.Abs(maxY) - Math.Abs(minY));
+            var zGap = (Math.Abs(maxZ) - Math.Abs(minZ));
             
-            var offsetX = (maxX + minX) / 2;
-            var offsetY = (maxY + minY) / 2;
-            var offsetZ = (maxZ + minZ) / 2;
+            newMap.shiftX = xGap % 2 == 0;
+            newMap.shiftY = yGap % 2 == 0;
+            newMap.shiftZ = zGap % 2 == 0;
+            
+            var offsetX = xGap / 2;
+            var offsetY = yGap / 2;
+            var offsetZ = zGap / 2;
             
             foreach (var (key, value) in cubes)
             {

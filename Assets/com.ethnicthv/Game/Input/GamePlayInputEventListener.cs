@@ -1,11 +1,11 @@
 using com.ethnicthv.Game.Cube;
-using com.ethnicthv.Game.Map;
 using UnityEngine;
 
 namespace com.ethnicthv.Game
 {
     public class GamePlayInputEventListener : InputEventListener
     {
+#if ENABLE_LEGACY_INPUT_MANAGER
         private CameraController _cameraController;
 
         public GamePlayInputEventListener(CameraController cameraController)
@@ -57,5 +57,14 @@ namespace com.ethnicthv.Game
             // zoom the camera
             _cameraController.cameraDist += delta/100;
         }
+#else
+        public override void Setup()
+        {
+        }
+
+        public override void Unplug()
+        {
+        }
+#endif
     }
 }
