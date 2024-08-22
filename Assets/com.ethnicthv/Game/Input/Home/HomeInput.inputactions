@@ -1,0 +1,74 @@
+{
+    "name": "HomeInput",
+    "maps": [
+        {
+            "name": "Home",
+            "id": "dbaf65cc-84fe-4756-9772-da0b70a4918c",
+            "actions": [
+                {
+                    "name": "Drag",
+                    "type": "Button",
+                    "id": "5c591765-a46f-49f7-911f-d074cbdb7236",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DragDelta",
+                    "type": "Value",
+                    "id": "fa024599-f96a-405e-ac19-359418f9c517",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "c5c34aee-86da-433d-acae-3033299e7eb3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f6ee0a81-626b-4142-b045-3ff4b0037c6c",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62896cbf-c49d-449d-a6e8-316ffe331fd0",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "973b901c-7409-4b38-9b1d-8aa80bcd623a",
+                    "path": "<Touchscreen>/primaryTouch/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

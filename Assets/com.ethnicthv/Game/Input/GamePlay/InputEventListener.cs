@@ -1,4 +1,4 @@
-namespace com.ethnicthv.Game
+namespace com.ethnicthv.Game.Input.GamePlay
 {
     public abstract class InputEventListener
     {

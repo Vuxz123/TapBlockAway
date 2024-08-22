@@ -7,8 +7,8 @@ namespace com.ethnicthv.Game
         [Header("Camera Properties")]
         [SerializeField] private float cameraDistance = -10;
         [SerializeField] private int upperBoundDistance = -3;
-        [SerializeField] private float maxCameraDistance = -5;
-        [SerializeField] private float minCameraDistance = -20;
+        [SerializeField] private float maxCameraDistance = -3;
+        [SerializeField] private float minCameraDistance = float.MinValue;
         
         [Header("Setup")]
         public Camera mainCamera;
@@ -51,6 +51,7 @@ namespace com.ethnicthv.Game
             get => cameraDistance;
             set
             {
+                Debug.Log("Camera Distance: " + value);
                 cameraDistance = Mathf.Clamp(value, minCameraDistance, maxCameraDistance);
                 mainCamera.transform.localPosition = new Vector3(0, 0, cameraDistance);
             }
@@ -66,12 +67,6 @@ namespace com.ethnicthv.Game
         {
             get => minCameraDistance;
             set => minCameraDistance = value;
-        }
-
-        private void Start()
-        {
-            mainCamera.transform.localPosition = new Vector3(0, 0, cameraDistance);
-            cameraRoot.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 }

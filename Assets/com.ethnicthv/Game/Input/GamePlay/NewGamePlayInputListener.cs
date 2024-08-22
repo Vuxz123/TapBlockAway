@@ -1,9 +1,9 @@
 using System.Collections;
-using com.ethnicthe.Game.Input;
+using com.ethnicthe.Game.Input.GamePlay;
 using com.ethnicthv.Game.Cube;
 using UnityEngine;
 
-namespace com.ethnicthv.Game.Input
+namespace com.ethnicthv.Game.Input.GamePlay
 {
     public class NewGamePlayInputListener : MonoBehaviour
     {

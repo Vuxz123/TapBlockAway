@@ -1,9 +1,6 @@
-
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace com.ethnicthv.Game
+namespace com.ethnicthv.Game.Input.GamePlay
 {
     public class GamePlayInputEventSystem : MonoBehaviour
     {

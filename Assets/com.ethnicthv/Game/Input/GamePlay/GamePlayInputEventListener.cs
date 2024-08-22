@@ -1,7 +1,4 @@
-using com.ethnicthv.Game.Cube;
-using UnityEngine;
-
-namespace com.ethnicthv.Game
+namespace com.ethnicthv.Game.Input.GamePlay
 {
     public class GamePlayInputEventListener : InputEventListener
     {

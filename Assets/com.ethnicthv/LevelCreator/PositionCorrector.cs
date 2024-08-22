@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using com.ethnicthv.Game.Cube;
 using com.ethnicthv.Game.Map;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -20,9 +19,9 @@ namespace com.ethnicthv.LevelCreator
         // <-- end -->
         
         // <-- cache -->
-        private Dictionary<(int, int, int), int> cubes = new();
-        private Map oldMap;
-        private Map newMap;
+        private readonly Dictionary<(int, int, int), int> cubes = new();
+        private Map _oldMap;
+        private Map _newMap;
         // <-- end -->
         
         public void CorrectMapsPosition(string[] mapPaths)
@@ -58,14 +57,14 @@ namespace com.ethnicthv.LevelCreator
             }
             var mapText = op.Result.text;
             Addressables.Release(op);
-            oldMap = JsonUtility.FromJson<Map>(mapText);
-            newMap = new Map
+            _oldMap = JsonUtility.FromJson<Map>(mapText);
+            _newMap = new Map
             {
-                size = oldMap.size,
-                map = new int[oldMap.size * oldMap.size * oldMap.size]
+                size = _oldMap.size,
+                map = new int[_oldMap.size * _oldMap.size * _oldMap.size]
             };
             
-            Array.Fill(newMap.map, -1);
+            Array.Fill(_newMap.map, -1);
             
             _isMapLoaded = true;
             
@@ -98,7 +97,7 @@ namespace com.ethnicthv.LevelCreator
         public void CorrectPosition()
         {
             Debug.Log("Correct Position!..");
-            var a = oldMap.size/2;
+            var a = _oldMap.size/2;
 
             var maxX = int.MinValue;
             var maxY = int.MinValue;
@@ -107,15 +106,15 @@ namespace com.ethnicthv.LevelCreator
             var minY = int.MaxValue;
             var minZ = int.MaxValue;
             
-            for (var x = 0; x < oldMap.size; x++)
+            for (var x = 0; x < _oldMap.size; x++)
             {
-                for (var y = 0; y < oldMap.size; y++)
+                for (var y = 0; y < _oldMap.size; y++)
                 {
-                    for (var z = 0; z < oldMap.size; z++)
+                    for (var z = 0; z < _oldMap.size; z++)
                     {
-                        var index = x + y * oldMap.size + z * oldMap.size * oldMap.size;
-                        if (index >= oldMap.map.Length) continue;
-                        var pointData = oldMap.map[index];
+                        var index = x + y * _oldMap.size + z * _oldMap.size * _oldMap.size;
+                        if (index >= _oldMap.map.Length) continue;
+                        var pointData = _oldMap.map[index];
                         if (pointData == -1) continue; // Note: -1 means no cube (null)
                         var posX = x-a;
                         var posY = y-a;
@@ -137,9 +136,9 @@ namespace com.ethnicthv.LevelCreator
             var yGap = (Math.Abs(maxY) - Math.Abs(minY));
             var zGap = (Math.Abs(maxZ) - Math.Abs(minZ));
             
-            newMap.shiftX = xGap % 2 == 0;
-            newMap.shiftY = yGap % 2 == 0;
-            newMap.shiftZ = zGap % 2 == 0;
+            _newMap.shiftX = xGap % 2 == 0;
+            _newMap.shiftY = yGap % 2 == 0;
+            _newMap.shiftZ = zGap % 2 == 0;
             
             var offsetX = xGap / 2;
             var offsetY = yGap / 2;
@@ -150,7 +149,7 @@ namespace com.ethnicthv.LevelCreator
                 var x = key.Item1 - offsetX + a;
                 var y = key.Item2 - offsetY + a;
                 var z = key.Item3 - offsetZ + a;
-                newMap.map[x + y * oldMap.size + z * oldMap.size * oldMap.size] = value;
+                _newMap.map[x + y * _oldMap.size + z * _oldMap.size * _oldMap.size] = value;
             }
             
             _isMapCorrected = true;
@@ -170,7 +169,7 @@ namespace com.ethnicthv.LevelCreator
         public void SaveMap()
         {
             Debug.Log("Save Map: " + mapPath);
-            var newMapText = JsonUtility.ToJson(newMap);
+            var newMapText = JsonUtility.ToJson(_newMap);
             
             System.IO.File.WriteAllText(mapPath, newMapText);
             
