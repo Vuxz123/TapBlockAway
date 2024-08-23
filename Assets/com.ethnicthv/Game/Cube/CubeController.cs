@@ -39,13 +39,13 @@ namespace com.ethnicthv.Game.Cube
             }
             get => _direction;
         }
-        
+
         public CubeState cubeState
         {
             get => state;
             private set => state = value;
         }
-        
+
         public (int, int, int) key => _key;
 
         private (int, int, int) _key;
@@ -55,6 +55,17 @@ namespace com.ethnicthv.Game.Cube
         {
             get => meshRenderer.sharedMaterial.color;
             set => meshRenderer.sharedMaterial.color = value;
+        }
+
+        public float cubeAlpha
+        {
+            get => meshRenderer.material.color.a;
+            set
+            {
+                var color = meshRenderer.material.color;
+                color.a = value;
+                meshRenderer.material.color = color;
+            }
         }
 
         #region Setup
@@ -105,7 +116,7 @@ namespace com.ethnicthv.Game.Cube
             // Note: prepare the cube to appear
             transform.rotation = Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
             transform.localScale = Vector3.zero;
-            
+
             gameObject.SetActive(true);
 
             // Note: start the appear animation
@@ -121,7 +132,7 @@ namespace com.ethnicthv.Game.Cube
         {
             // Note: set the cube layer for disable
             gameObject.layer = CubeManager.instance.disableLayer;
-            
+
             // Note: start the disappear animation
             transform.DOScale(0f, 1).SetEase(Ease.InBack).OnComplete(() =>
             {
@@ -135,7 +146,7 @@ namespace com.ethnicthv.Game.Cube
         {
             // Note: set the cube layer for disable
             gameObject.layer = CubeManager.instance.disableLayer;
-            
+
             // Note: start the fade out animation
             DOTween.ToAlpha(
                 () => meshRenderer.material.GetColor(Color1),
@@ -167,7 +178,7 @@ namespace com.ethnicthv.Game.Cube
                 bounceObject = cube;
                 break;
             }
-            
+
             // Note: check if current cube is last cube
             var cubeCount = CubeManager.instance.GetCubeCount();
             Debug.Log("Cube Count: " + cubeCount);
@@ -175,17 +186,18 @@ namespace com.ethnicthv.Game.Cube
 
             if (obstacle)
             {
-                var temp1 = new Vector3(bounceObject._key.Item1, bounceObject._key.Item2, bounceObject._key.Item3) - dir;
+                var temp1 = new Vector3(bounceObject._key.Item1, bounceObject._key.Item2, bounceObject._key.Item3) -
+                            dir;
                 if (temp1 == transform.localPosition)
                 {
                     // Note: Bounce
-                    
+
                     Bounce(dir);
                     return;
                 }
 
                 // Note: Move and Bounce
-                
+
                 cubeState = CubeState.Bouncing;
                 var temp = transform.position - goTo;
                 var moveValue = temp.magnitude + 1;
@@ -201,15 +213,15 @@ namespace com.ethnicthv.Game.Cube
                     });
                 return;
             }
-            
+
             // Note: Move
-            
+
             CubeManager.instance.CallMoveCube(); // Note: invoke Move event
-            
+
             // Note: set the cube layer for disable
             cubeState = CubeState.Moving;
             gameObject.layer = CubeManager.instance.disableLayer;
-            
+
             transform.DOLocalMove(goTo, CubeManager.instance.cubeMoveDuration)
                 .SetEase(Ease.Linear);
             DOVirtual.DelayedCall(CubeManager.instance.cubeMoveDuration / 2 - 0.05f, () =>

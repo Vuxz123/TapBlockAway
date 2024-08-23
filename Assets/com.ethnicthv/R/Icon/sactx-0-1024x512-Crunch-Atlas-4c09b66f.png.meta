@@ -1,0 +1,309 @@
+fileFormatVersion: 2
+guid: c51c0a68a1b1a1448b55649ab05b4118
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sactx-0-1024x512-Crunch-Atlas-4c09b66f_2
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 391
+        width: 787
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d4cf332b4ecdc642bc1387e54f4d72c
+      internalID: 1614761252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-1024x512-Crunch-Atlas-4c09b66f_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 258
+        width: 511
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 640a746f03580104da5829acc236370b
+      internalID: 599421987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-1024x512-Crunch-Atlas-4c09b66f_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 255
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d37ef8f6d6063cc4486be35c1099fe60
+      internalID: -1901041311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-1024x512-Crunch-Atlas-4c09b66f_22
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 0
+        width: 120
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 430958bd0205c6b489e4d9ee1550ca58
+      internalID: 2035370861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-1024x512-Crunch-Atlas-4c09b66f_24
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 6
+        width: 116
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b978afe7a92168046ac06cb838ede02f
+      internalID: 502264056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-1024x512-Crunch-Atlas-4c09b66f_25
+      rect:
+        serializedVersion: 2
+        x: 525
+        y: 0
+        width: 122
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f0ecb1587d29e244b728354cbcc77fc
+      internalID: -1127717052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: d0767b005519a1f42b1ecf491c9269ae
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_0: 417111582
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_1: 378124633
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_10: 1173754778
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_11: -889640115
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_12: -1168921520
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_13: -1629316568
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_14: -230689902
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_15: 646096813
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_16: -1901041311
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_17: 1297110511
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_18: -1928303327
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_19: 2005596292
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_2: 1614761252
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_20: 29584948
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_21: -249999192
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_22: 2035370861
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_23: 499329868
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_24: 502264056
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_25: -1127717052
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_26: 1595673567
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_27: -1744536997
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_28: -552015013
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_29: 1211178090
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_3: -1424048348
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_4: -2145461686
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_5: -1862975173
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_6: -1691316901
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_7: -1460274675
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_8: 599421987
+      sactx-0-1024x512-Crunch-Atlas-4c09b66f_9: -27420339
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

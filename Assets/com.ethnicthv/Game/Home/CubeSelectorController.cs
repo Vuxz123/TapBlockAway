@@ -11,10 +11,10 @@ namespace com.ethnicthv.Game.Home
 {
     public class CubeSelectorController : MonoBehaviour
     {
-        [Header("Setup")]
+        [Header("Setup")] 
         [SerializeField] private Transform cubeContainer;
         [SerializeField] private GameObject cubePrefab;
-        
+
         private HomeInput _homeInput;
         private TweenerCore<Vector3, Vector3, DG.Tweening.Plugins.Options.VectorOptions> _dragBounceTween;
         private Coroutine _dragCoroutine;
@@ -27,7 +27,13 @@ namespace com.ethnicthv.Game.Home
         private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
         // Note: round the current cube index to the nearest integer
-        public int CurrentCubeIndex => Mathf.RoundToInt(_currentCubeIndex); 
+        public int currentCubeIndex => Mathf.RoundToInt(_currentCubeIndex);
+
+        private void SetCurrentCubeIndex(float value)
+        {
+            _currentCubeIndex = value;
+            OnCurrentCubeIndexUpdated();
+        }
 
         private void Awake()
         {
@@ -47,8 +53,8 @@ namespace com.ethnicthv.Game.Home
             var camDist = Vector3.Distance(cam.transform.position, Vector3.zero);
             var pointA = cam.ScreenPointToRay(new Vector3(0, 0, 0)).GetPoint(camDist).x;
             var pointB = cam.ScreenPointToRay(new Vector3(Screen.width, 0, 0)).GetPoint(camDist).x;
-            
-            _distance = (pointB - pointA)/0.75f;
+
+            _distance = (pointB - pointA) / 0.75f;
             Debug.Log("Distance: " + _distance);
 
             for (var i = 0; i < 5; i++)
@@ -56,10 +62,12 @@ namespace com.ethnicthv.Game.Home
                 var cube = Instantiate(cubePrefab, cubeContainer);
                 var cubeController = cube.GetComponent<CubeController>();
                 _cubeSkinList.Add(cubeController);
-                
+
                 cube.transform.localPosition = new Vector3(i * _distance, 0, 0);
+                cubeController.cubeAlpha = 0;
             }
             
+            _cubeSkinList[0].cubeAlpha = 1;
         }
 
         private void OnDisable()
@@ -67,37 +75,56 @@ namespace com.ethnicthv.Game.Home
             _homeInput.Disable();
         }
 
+        private void OnCurrentCubeIndexUpdated()
+        {
+            UpdateAlpha();
+        }
+
+        private void UpdateAlpha()
+        {
+            var current = currentCubeIndex;
+            var dis2Current = current - _currentCubeIndex;
+            var dir = dis2Current > 0 ? 1 : -1;
+            var prev = current - dir;
+            //update alpha
+            var currentCube = _cubeSkinList[current];
+            currentCube.cubeAlpha = 1 - Mathf.Abs(dis2Current);
+            
+            if (prev >= 0 && prev < _cubeSkinList.Count)
+            {
+                var prevCube = _cubeSkinList[prev];
+                prevCube.cubeAlpha = Mathf.Abs(dis2Current);
+            }
+        }
 
         #region Input Listeners
 
         private void OnDragStart()
         {
             _isDragging = true;
-            
+
             if (_dragBounceTween != null && _dragBounceTween.IsPlaying())
             {
                 _dragBounceTween.Kill();
+                _dragBounceTween = null;
             }
-            _currentCubeIndex = - cubeContainer.localPosition.x / _distance;
-            
-            Debug.Log("OnDragStart - " + _currentCubeIndex + " - " + CurrentCubeIndex);
-            
+
+            SetCurrentCubeIndex(-cubeContainer.localPosition.x / _distance);
+
             _dragCoroutine = StartCoroutine(OnDragCoroutine());
         }
 
         private void OnDragEnd()
         {
-            Debug.Log("OnDragEnd");
             _isDragging = false;
-            if (_dragCoroutine != null)StopCoroutine(_dragCoroutine);
-            
-            Debug.Log("Current Cube Index: " + CurrentCubeIndex);
-            
-            _dragBounceTween = cubeContainer.DOLocalMove(new Vector3(-CurrentCubeIndex * _distance,0,0), 1f)
+            if (_dragCoroutine != null) StopCoroutine(_dragCoroutine);
+
+            _dragBounceTween = cubeContainer.DOLocalMove(new Vector3(-currentCubeIndex * _distance, 0, 0), 1f)
                 .SetEase(Ease.OutCirc)
-                .OnComplete(() => _currentCubeIndex = CurrentCubeIndex);
+                .OnUpdate(() => SetCurrentCubeIndex(-cubeContainer.localPosition.x / _distance))
+                .OnComplete(() => _currentCubeIndex = currentCubeIndex);
         }
-        
+
         private IEnumerator OnDragCoroutine()
         {
             while (_isDragging)
@@ -107,10 +134,10 @@ namespace com.ethnicthv.Game.Home
                 yield return _waitForFixedUpdate;
             }
         }
-        
+
         private void OnDrag(float deltaX)
         {
-            _currentCubeIndex = Mathf.Clamp(_currentCubeIndex - deltaX, -0.5f, _cubeSkinList.Count - 0.5f);
+            SetCurrentCubeIndex(Mathf.Clamp(_currentCubeIndex - deltaX, -0.5f, _cubeSkinList.Count - 0.5f));
             cubeContainer.localPosition = new Vector3(-_currentCubeIndex * _distance, 0, 0);
         }
 
