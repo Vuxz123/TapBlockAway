@@ -1,7 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using com.ethnicthv.Game.Gameplay;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -29,6 +33,9 @@ namespace com.ethnicthv.Game.Cube
         public float appearDuration = 0.5f;
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private CubeState state = CubeState.Static;
+        
+        private Tween _delayMoveFade;
+        private TweenerCore<Color,Color,ColorOptions> _moveFade;
 
         public CubeDirection direction
         {
@@ -70,17 +77,26 @@ namespace com.ethnicthv.Game.Cube
 
         #region Setup
 
-        public void OnDisable()
-        {
-            Reset();
-        }
-
         public void Reset()
         {
             cubeState = CubeState.Static;
+            _delayMoveFade?.Kill();
+            _moveFade?.Kill();
+            StopAllCoroutines();
             transform.DOKill();
             meshRenderer.material.DOKill();
-            meshRenderer.material.color = Color.white;
+        }
+
+        public void ReStart()
+        {
+            cubeState = CubeState.Static;
+            CubeManager.instance.ReAddCube(this);
+            _delayMoveFade?.Kill();
+            _moveFade?.Kill();
+            transform.DOKill();
+            meshRenderer.material.DOKill();
+            transform.localPosition = new Vector3(_key.Item1, _key.Item2, _key.Item3);
+            cubeAlpha = 1;
         }
 
         public void Setup((int, int, int) cubeKey, Color[] nearColor, CubeDirection dir)
@@ -148,14 +164,13 @@ namespace com.ethnicthv.Game.Cube
             gameObject.layer = CubeManager.instance.disableLayer;
 
             // Note: start the fade out animation
-            DOTween.ToAlpha(
+            _moveFade = DOTween.ToAlpha(
                 () => meshRenderer.material.GetColor(Color1),
                 x => meshRenderer.material.SetColor(Color1, x),
                 0, duration
             ).OnComplete(() =>
             {
                 gameObject.SetActive(false);
-                meshRenderer.material.SetColor(Color1, Color.white);
                 onComplete?.Invoke();
             });
         }
@@ -224,7 +239,7 @@ namespace com.ethnicthv.Game.Cube
 
             transform.DOLocalMove(goTo, CubeManager.instance.cubeMoveDuration)
                 .SetEase(Ease.Linear);
-            DOVirtual.DelayedCall(CubeManager.instance.cubeMoveDuration / 2 - 0.05f, () =>
+            _delayMoveFade = DOVirtual.DelayedCall(CubeManager.instance.cubeMoveDuration / 2 - 0.05f, () =>
             {
                 FadeOut(CubeManager.instance.cubeMoveDuration / 2, () =>
                 {

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using com.ethnicthv.Game.Cube;
+using com.ethnicthv.Game.Gameplay;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -12,9 +14,11 @@ namespace com.ethnicthv.Game.Map
         [SerializeField] private int numberOfCubesShowedPerFrame = 10;
         
         public bool isMapLoaded { get; private set; }
+        public bool isMapShowed { get; private set; }
         
         // <-- cache -->
         private PriorityQueue<CubeController, float> _cubeQueue;
+        private List<CubeController> _cubes;
         // <-- end -->
 
         private void Awake()
@@ -28,6 +32,7 @@ namespace com.ethnicthv.Game.Map
             Debug.Log("Loading Map: " + part);
 #endif
             isMapLoaded = false; // Note: re set the map loaded flag
+            isMapShowed = false; // Note: re set the map showed flag
             StopAllCoroutines();
             var mapText = Addressables.LoadAssetAsync<TextAsset>(part);
             StartCoroutine(BeginBuildMap(mapText));
@@ -101,6 +106,12 @@ namespace com.ethnicthv.Game.Map
             CubeManager.instance.bound = a + 10;
 
             #endregion
+
+            #region Self Setup
+
+            numberOfCubesShowedPerFrame = _cubeQueue.Count / 10;
+            
+            #endregion
             
             isMapLoaded = true; // Note: set the map loaded flag
 #if UNITY_EDITOR
@@ -108,25 +119,85 @@ namespace com.ethnicthv.Game.Map
 #endif
         }
         
-        public void ShowMap()
+        public void ShowMap(Action onShowed = null)
         {
-            StartCoroutine(ShowMapCoroutine());
+            Debug.Log("Show Map");
+            StartCoroutine(ShowMapCoroutine(onShowed));
         }
         
-        private IEnumerator ShowMapCoroutine()
+        private IEnumerator ShowMapCoroutine(Action onShowed = null)
         {
             var count = 0;
+            
+            if (_cubeQueue.Count <= 0) goto list;
+            
+            // Note: Use a Queue to show the cubes
+            _cubes = new List<CubeController>(_cubeQueue.Count);
+            
             while (_cubeQueue.Count > 0)
             {
                 count++;
                 var cube = _cubeQueue.Dequeue();
                 cube.Appear();
+                _cubes.Add(cube);
                 if (count < numberOfCubesShowedPerFrame) continue;
                 count = 0;
                 yield return new WaitForSeconds(0.001f);
             }
+
+            goto end;
+            
+            // Note: Use a List to show the cubes (this is for the reshowing the cubes)
+            list:
+            if (_cubes == null)
+            {
+                throw new Exception("Cubes list for reshowing is null!!!");
+            }
+            
+            foreach (var t in _cubes)
+            {
+                t.ReStart();
+                t.Appear();
+                if (count < numberOfCubesShowedPerFrame) continue;
+                count = 0;
+                yield return new WaitForSeconds(0.001f);
+            }
+            
+            end:
+            isMapShowed = true;
+            onShowed?.Invoke();
         }
         
+        public void HideMap(Action onHided = null)
+        {
+            Debug.Log("Hide Map");
+            StartCoroutine(HideMapCoroutine(onHided));
+        }
+
+        private IEnumerator HideMapCoroutine(Action onHided = null)
+        {
+            Debug.Log("Hiding Map 1");
+            if (_cubes == null)
+            {
+                Debug.LogError("You cannot hide the map if the map is not shown!!!");
+                yield break;
+            }
+            Debug.Log("Hiding Map 2 - " + _cubes.Count);
+            var count = 0;
+            for (int i = _cubes.Count - 1; i >= 0; i--)
+            {
+                count++;
+                _cubes[i].Disappear();
+                Debug.Log($"Cube {i} Disappear");
+                if (count < numberOfCubesShowedPerFrame) continue;
+                count = 0;
+                yield return new WaitForSeconds(0.001f);
+            }
+            
+            isMapShowed = false;
+            onHided?.Invoke();
+        }
+
         private class CubeComparer : IComparer<float>
         {
             public int Compare(float x, float y)

@@ -67,7 +67,6 @@ namespace com.ethnicthv.Game.Input.GamePlay
         private void OnTap()
         {
             var tapPosition = _gamePlayInput.GamePlay.Touch0Position.ReadValue<Vector2>();
-            Debug.Log("Tap Position: " + tapPosition);
             // get the object that was tapped
             var ray = cameraController.mainCamera.ScreenPointToRay(tapPosition);
             if (!Physics.Raycast(ray, out var hit, maxDistance: 100, layerMask: CubeManager.instance.enableLayerMask)) return;
@@ -83,7 +82,6 @@ namespace com.ethnicthv.Game.Input.GamePlay
 
         private void OnZoomEnd()
         {
-            Debug.Log("OnZoomEnd - " + _isZooming);
             _isZooming = false;
             if(_zoomCoroutine != null) StopCoroutine(_zoomCoroutine);
             _zoomCoroutine = null;
@@ -91,7 +89,6 @@ namespace com.ethnicthv.Game.Input.GamePlay
 
         private void OnZoomStart()
         {
-            Debug.Log("OnZoomStart - " + _isZooming);
             _isZooming = true;
             _zoomCoroutine = StartCoroutine(OnZoomCoroutine());
         }
@@ -129,14 +126,12 @@ namespace com.ethnicthv.Game.Input.GamePlay
 
         private void OnDragStart()
         {
-            Debug.Log("OnDragStart - " + _isDrag);
             _isDrag = true;
             _dragCoroutine = StartCoroutine(OnDragCoroutine());
         }
 
         private void OnDragEnd()
         {
-            Debug.Log("OnDragEnd - " + _isDrag);
             _isDrag = false;
             if (_dragCoroutine != null) StopCoroutine(_dragCoroutine);
             _dragCoroutine = null;
@@ -147,7 +142,6 @@ namespace com.ethnicthv.Game.Input.GamePlay
             while (_isDrag)
             {
                 var delta = _gamePlayInput.GamePlay.Touch0Delta.ReadValue<Vector2>();
-                Debug.Log("Dragging - " + delta);
                 OnDrag(delta);
                 yield return null;
             }

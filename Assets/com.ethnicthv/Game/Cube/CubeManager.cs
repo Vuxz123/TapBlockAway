@@ -112,6 +112,8 @@ namespace com.ethnicthv.Game.Cube
             
             if (!_cubeList.Remove(key, out var value)) return;
             
+            value.Reset();
+            
             if (animated)
             {
                 value.Disappear(OnComplete);
@@ -130,6 +132,11 @@ namespace com.ethnicthv.Game.Cube
         }
 
         #endregion
+
+        public void ReAddCube(CubeController cube)
+        {
+            _cubeList.TryAdd(cube.key, cube);
+        }
         
         public void ResetCubeCache()
         {
