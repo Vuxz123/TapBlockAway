@@ -40,6 +40,10 @@ namespace com.ethnicthv.Game.Map
 
         private IEnumerator BeginBuildMap(AsyncOperationHandle<TextAsset> op)
         {
+            if (CubeManager.instance.HideAllCubes())
+            {
+                yield return new WaitForSeconds(1);
+            }
             yield return new WaitUntil(() => op.IsDone); //Note: wait for the operation to complete
             
             var mapText = op.Result.text; 

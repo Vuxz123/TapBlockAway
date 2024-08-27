@@ -112,8 +112,6 @@ namespace com.ethnicthv.Game.Cube
             
             if (!_cubeList.Remove(key, out var value)) return;
             
-            value.Reset();
-            
             if (animated)
             {
                 value.Disappear(OnComplete);
@@ -127,6 +125,7 @@ namespace com.ethnicthv.Game.Cube
             return;
             void OnComplete()
             {
+                value.Reset();
                 _cubePoll.ReturnCube(value.gameObject);
             }
         }
@@ -199,6 +198,22 @@ namespace com.ethnicthv.Game.Cube
         public void CallAllCubeMoved()
         {
             OnAllCubeMoved();
+        }
+
+        public bool HideAllCubes()
+        {
+            if (_cubeList.Count == 0) return false;
+            foreach (var (_, cube) in _cubeList)
+            {
+                cube.Disappear(() =>
+                {
+                    cube.Reset();
+                    _cubePoll.ReturnCube(cube.gameObject);
+                });
+            }
+            _cubeList.Clear();
+            _cubeCount = 0;
+            return true;
         }
     }
     

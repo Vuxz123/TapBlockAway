@@ -1,3 +1,5 @@
+using com.ethnicthv.Game.LevelSelection;
+using TMPro;
 using UnityEngine;
 
 namespace com.ethnicthv.Game.Gameplay
@@ -5,45 +7,15 @@ namespace com.ethnicthv.Game.Gameplay
     public class GameplayUIController : MonoBehaviour
     {
         [Header("Setup")] 
+        [Header("Title", order = 2)]
+        [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private GameObject pauseMenu;
         [SerializeField] private GameObject gameOverMenu;
         [SerializeField] private GameObject gameWinMenu;
 
-        private void Awake()
+        public void UpdateLevelText(int level)
         {
-            pauseMenu.SetActive(false);
-            gameOverMenu.SetActive(false);
-            gameWinMenu.SetActive(false);
-        }
-
-        public void ShowPauseMenu()
-        {
-            pauseMenu.SetActive(true);
-        }
-
-        public void HidePauseMenu()
-        {
-            pauseMenu.SetActive(false);
-        }
-
-        public void ShowGameOverMenu()
-        {
-            gameOverMenu.SetActive(true);
-        }
-
-        public void HideGameOverMenu()
-        {
-            gameOverMenu.SetActive(false);
-        }
-
-        public void ShowGameWinMenu()
-        {
-            gameWinMenu.SetActive(true);
-        }
-
-        public void HideGameWinMenu()
-        {
-            gameWinMenu.SetActive(false);
+            levelText.text = $"Level {level}";
         }
         
     }

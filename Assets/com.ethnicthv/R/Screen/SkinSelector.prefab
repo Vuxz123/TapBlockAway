@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 411113246822418772}
   - component: {fileID: 8910235314233733510}
   m_Layer: 0
-  m_Name: HomeScreen
+  m_Name: SkinSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -20,6 +20,8 @@ namespace com.ethnicthv.Game.LevelSelection
         private CategoryController _categoryController;
         private Action _onView = () => { };
         
+        private bool _isEmpty = true;
+        
         public void SetupLevelGroup(
             CategoryController categoryController,
             bool locked,
@@ -28,12 +30,12 @@ namespace com.ethnicthv.Game.LevelSelection
             int levels, 
             Action onView)
         {
+            _isEmpty = false;
+            
             _categoryController = categoryController;
             _onView = onView;
             
-            levelTitle.text = $"Level {startLevel} - {startLevel + maxLevel - 1}";
-            levelProgress.fillAmount = levels / (float) maxLevel;
-            levelProgressText.text = $"{levels}/{maxLevel}";
+            levelTitle.text = $"Level {startLevel + 1} - {startLevel + maxLevel}";
 
             if (locked)
             {
@@ -41,15 +43,22 @@ namespace com.ethnicthv.Game.LevelSelection
                 levelViewBtn.color = _categoryController.levelGroupLockedColor;
                 levelIcon.sprite = _categoryController.levelGroupSprites[2];
                 levelIcon.color = _categoryController.levelGroupLockedColor;
+                
+                levelProgress.fillAmount = 0;
+                levelProgressText.text = $"0/{maxLevel}";
                 return;
             }
             
-            if (maxLevel == levels)
+            if (levels >= maxLevel)
             {
                 Debug.Log("Level Group Completed");
                 levelBorder.color = _categoryController.levelGroupCompletedColor;
                 levelViewBtn.color = _categoryController.levelGroupCompletedColor;
                 levelIcon.sprite = _categoryController.levelGroupSprites[0];
+                levelIcon.color = Color.white;
+                
+                levelProgress.fillAmount = 1;
+                levelProgressText.text = $"{maxLevel}/{maxLevel}";
             }
             else
             {
@@ -58,12 +67,21 @@ namespace com.ethnicthv.Game.LevelSelection
                 levelViewBtn.color = _categoryController.levelGroupNotCompletedColor;
                 levelIcon.sprite = _categoryController.levelGroupSprites[1];
                 levelIcon.color = _categoryController.levelGroupLockedColor;
+                
+                levelProgress.fillAmount = (levels + 1) / (float) maxLevel;
+                levelProgressText.text = $"{levels + 1}/{maxLevel}";
             }
+        }
+        
+        public void Empty()
+        {
+            _isEmpty = true;
+            content.SetActive(false);
         }
 
         public void Hide(float levelGroupOffset)
         {
-            
+            if (_isEmpty) return;
             content.transform.DOLocalMoveX(- levelGroupOffset, 0.5f).SetEase(Ease.InOutSine).OnComplete(() =>
             {
                 content.SetActive(false);
@@ -72,6 +90,7 @@ namespace com.ethnicthv.Game.LevelSelection
 
         public void Show(float levelGroupOffset)
         {
+            if (_isEmpty) return;
             content.transform.localPosition = new Vector2(
                 levelGroupOffset, 
                 content.transform.localPosition.y);
@@ -83,6 +102,11 @@ namespace com.ethnicthv.Game.LevelSelection
         {
             Debug.Log("View Level Group");
             _onView();
+        }
+
+        public void Reset()
+        {
+            Empty();
         }
     }
 }
