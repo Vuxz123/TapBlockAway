@@ -42,12 +42,10 @@ namespace com.ethnicthv.Game.Data
         {
             Debug.Log("SaveManager Start");
             var firstTime = !(LoadGameProgress() && LoadSkinProgress() && LoadPlayerData());
-            if (firstTime)
-            {
-                CreateNewGameProgress();
-                CreateNewSkinProgress();
-                CreateNewPlayerData();
-            }
+            if (!firstTime) return;
+            CreateNewGameProgress();
+            CreateNewSkinProgress();
+            CreateNewPlayerData();
         }
 
         #region Game Progress
@@ -78,15 +76,21 @@ namespace com.ethnicthv.Game.Data
             }
         }
         
+        public void UpdateSkinProgress(int skinId, float progress)
+        {
+            if (Mathf.Approximately(progress, 1))
+            {
+                skinProgressData.UnlockSkin(skinId);
+            }
+            skinProgressData.SetSkinProgress(skinId, progress);
+        }
+        
         private bool LoadGameProgress()
         {
-            if (File.Exists(_gameProgressFilePath))
-            {
-                var json = File.ReadAllText(_gameProgressFilePath);
-                gameProgressData = JsonConvert.DeserializeObject<GameProgress>(json);
-                return gameProgressData != null;
-            }
-            return false;
+            if (!File.Exists(_gameProgressFilePath)) return false;
+            var json = File.ReadAllText(_gameProgressFilePath);
+            gameProgressData = JsonConvert.DeserializeObject<GameProgress>(json);
+            return gameProgressData != null;
         }
 
         private void CreateNewGameProgress()
@@ -108,13 +112,10 @@ namespace com.ethnicthv.Game.Data
 
         private bool LoadSkinProgress()
         {
-            if (File.Exists(_skinProgressFilePath))
-            {
-                var json = File.ReadAllText(_skinProgressFilePath);
-                skinProgressData = JsonConvert.DeserializeObject<SkinProgress>(json);
-                return skinProgressData != null;
-            }
-            return false;
+            if (!File.Exists(_skinProgressFilePath)) return false;
+            var json = File.ReadAllText(_skinProgressFilePath);
+            skinProgressData = JsonConvert.DeserializeObject<SkinProgress>(json);
+            return skinProgressData != null;
         }
         
         private void CreateNewSkinProgress()
@@ -135,13 +136,10 @@ namespace com.ethnicthv.Game.Data
         
         private bool LoadPlayerData()
         {
-            if (File.Exists(_playerDataFilePath))
-            {
-                var json = File.ReadAllText(_playerDataFilePath);
-                playerData = JsonConvert.DeserializeObject<PlayerData>(json);
-                return playerData != null;
-            }
-            return false;
+            if (!File.Exists(_playerDataFilePath)) return false;
+            var json = File.ReadAllText(_playerDataFilePath);
+            playerData = JsonConvert.DeserializeObject<PlayerData>(json);
+            return playerData != null;
         }
         
         private void CreateNewPlayerData()

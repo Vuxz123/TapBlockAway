@@ -2,10 +2,18 @@ using UnityEngine;
 
 namespace com.ethnicthv.Game.Home
 {
-    public class HomeScreenManager : MonoBehaviour
+    public class SkinSelectionManager : MonoBehaviour
     {
+        public static SkinSelectionManager instance { get; private set; }
+        
         [Header("Setup")] 
+        public CubeSkinDatabase skinDatabase;
         public CameraController cameraController;
+        
+        private void Awake()
+        {
+            instance = this;
+        }
 
         private void OnEnable()
         {

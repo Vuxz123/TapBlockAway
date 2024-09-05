@@ -31,6 +31,7 @@ namespace com.ethnicthv.Game.Cube
     public class CubeController : MonoBehaviour
     {
         public float appearDuration = 0.5f;
+        [SerializeField] private MeshFilter meshFilter;
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private CubeState state = CubeState.Static;
         
@@ -121,6 +122,12 @@ namespace com.ethnicthv.Game.Cube
         private void SetupDirection(CubeDirection dir)
         {
             transform.rotation = Directions[dir];
+        }
+
+        public void SetSkin(Skin skin)
+        {
+            meshRenderer.material = new Material(skin.material);
+            meshFilter.mesh = skin.mesh;
         }
 
         #endregion
