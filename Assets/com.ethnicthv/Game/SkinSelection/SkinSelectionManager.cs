@@ -20,5 +20,12 @@ namespace com.ethnicthv.Game.Home
             cameraController.cameraDist = -4;
             cameraController.cameraRoot.rotation = Quaternion.Euler(30, 225, 0);
         }
+        
+        public void HideSkinSelection()
+        {
+            if (!GameManager.instance.TryChangeState(ScreenState.GamePlay, out var main)) return;
+            main.Enable();
+            gameObject.SetActive(false);
+        }
     }
 }

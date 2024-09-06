@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace com.ethnicthv.Game.Data
 {
@@ -6,6 +7,7 @@ namespace com.ethnicthv.Game.Data
     public class PlayerData
     {
         public int currentSkin;
+        public List<int> badges;
         
         public static PlayerData Empty()
         {
@@ -14,5 +16,23 @@ namespace com.ethnicthv.Game.Data
                 currentSkin = 0
             };
         }
+        
+        public void SetCurrentSkin(int skinId)
+        {
+            currentSkin = skinId;
+        }
+        
+        public void AddBadge(int badgeId)
+        {
+            if (badges.Contains(badgeId)) return;
+            badges.Add(badgeId);
+        }
+        
+        public bool HasBadge(int badgeId)
+        {
+            return badges.Contains(badgeId);
+        }
+        
+        
     }
 }

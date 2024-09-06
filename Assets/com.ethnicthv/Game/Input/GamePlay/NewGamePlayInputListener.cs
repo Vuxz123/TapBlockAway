@@ -1,6 +1,7 @@
 using System.Collections;
 using com.ethnicthe.Game.Input.GamePlay;
 using com.ethnicthv.Game.Cube;
+using com.ethnicthv.Game.Gameplay;
 using UnityEngine;
 
 namespace com.ethnicthv.Game.Input.GamePlay
@@ -69,11 +70,15 @@ namespace com.ethnicthv.Game.Input.GamePlay
             var tapPosition = _gamePlayInput.GamePlay.Touch0Position.ReadValue<Vector2>();
             // get the object that was tapped
             var ray = cameraController.mainCamera.ScreenPointToRay(tapPosition);
+            
             if (!Physics.Raycast(ray, out var hit, maxDistance: 100, layerMask: CubeManager.instance.enableLayerMask)) return;
             var tappedObject = hit.collider.gameObject;
             var temp = tappedObject.name.Split("_");
             var cube = CubeManager.instance.GetCube(int.Parse(temp[1]), int.Parse(temp[2]), int.Parse(temp[3]));
-            if (cube != null) cube.Move();
+            
+            if (cube == null) return;
+            GamePlayManager.instance.HideTapTutorial();
+            cube.Move();
         }
 
         #endregion
@@ -95,6 +100,12 @@ namespace com.ethnicthv.Game.Input.GamePlay
 
         private IEnumerator OnZoomCoroutine()
         {
+            if (!GamePlayManager.instance.IsEnableZoom())
+            {
+                _isZooming = false;
+                _zoomCoroutine = null;
+                yield break;
+            }
             while (_isZooming)
             {
                 var pos1 = _gamePlayInput.GamePlay.Touch0Position.ReadValue<Vector2>();
@@ -109,6 +120,7 @@ namespace com.ethnicthv.Game.Input.GamePlay
 
                 var delta = distance - _previousZoomDistance;
                 _previousZoomDistance = distance;
+                GamePlayManager.instance.HideZoomTutorial();
                 OnZoom(Mathf.Clamp(delta, -20,20));
                 yield return null;
             }
@@ -139,9 +151,16 @@ namespace com.ethnicthv.Game.Input.GamePlay
 
         private IEnumerator OnDragCoroutine()
         {
+            if (!GamePlayManager.instance.IsEnableRotate())
+            {
+                _isDrag = false;
+                _dragCoroutine = null;
+                yield break;
+            }
             while (_isDrag)
             {
                 var delta = _gamePlayInput.GamePlay.Touch0Delta.ReadValue<Vector2>();
+                GamePlayManager.instance.HideRotateTutorial();
                 OnDrag(delta);
                 yield return null;
             }

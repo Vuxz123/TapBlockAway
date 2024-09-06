@@ -27,6 +27,7 @@ namespace com.ethnicthv.Game.Gameplay
         [SerializeField] private GamePlayInputEventSystem gamePlayInputEventSystem;
         public CubeManager cubeManager;
         public CameraController cameraController;
+        public GameControlTutorialController gameControlTutorialController;
 
         // <-- internal properties -->
         public static GamePlayManager instance { get; private set; }
@@ -93,11 +94,26 @@ namespace com.ethnicthv.Game.Gameplay
             disableAble.SetActive(true);
         }
 
+        public void AnimatedDisable()
+        {
+            
+        }
+
+        public void AnimatedEnable()
+        {
+            
+        }
+
         #endregion
 
         private void OnFinishLevel()
         {
             Debug.Log("Finish Level");
+            
+            HideTapTutorial();
+            HideRotateTutorial();
+            HideZoomTutorial();
+            
             var isLastLevelInGroup = GameInternalSetting.IsLastLevelInGroup(category, currentLevel, out var levelGroup);
             var temp = levelGroup;
             if (isLastLevelInGroup)
@@ -123,11 +139,13 @@ namespace com.ethnicthv.Game.Gameplay
         {
             yield return new WaitUntil(() => mapManager.isMapLoaded);
             mapManager.ShowMap(() => { State.gamePhase = GamePhase.Playing; });
+            ShowTutorial();
         }
-        
+
         public void PrepareGame()
         {
             State.gamePhase = GamePhase.Start;
+            SetupTutorial();
             mapManager.LoadMap($"Assets/com.ethnicthv/R/Map/{CategoryMap[category]}/{currentLevel}.json");
             //Obsolete: be removed in the future
             StartCoroutine(StartGameCoroutine());
@@ -185,6 +203,69 @@ namespace com.ethnicthv.Game.Gameplay
             { 1, "Normal" },
             { 2, "Hard" }
         };
+
+        #region Tutorial
+
+        public void SetupTutorial()
+        {
+            gameControlTutorialController.Setup(category, currentLevel);
+        }
+
+        public void ShowTutorial()
+        {
+            HideTapTutorial();
+            HideRotateTutorial();
+            HideZoomTutorial();
+            gameControlTutorialController.ShowTutorial();
+        }
+
+        public void HideTapTutorial()
+        {
+            gameControlTutorialController.HideTapTutorial();
+        }
+
+        public void HideRotateTutorial()
+        {
+            gameControlTutorialController.HideRotateTutorial();
+        }
+
+        public void HideZoomTutorial()
+        {
+            gameControlTutorialController.HideMzTutorial();
+        }
+
+        public bool IsEnableRotate()
+        {
+            var config =
+                GameInternalSetting.FeatureLockTutorialConfigs[GameInternalSetting.TutorialType.Rotate];
+            foreach (var (enableCat, enableLvStart, enableLvEnd) in config)
+            {
+                if (category == enableCat && currentLevel >= enableLvStart && currentLevel < enableLvEnd)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public bool IsEnableZoom()
+        {
+            var config =
+                GameInternalSetting.FeatureLockTutorialConfigs[GameInternalSetting.TutorialType.Move2Zoom];
+            
+            foreach (var (enableCat, enableLvStart, enableLvEnd) in config)
+            {
+                if (category == enableCat && currentLevel >= enableLvStart && currentLevel < enableLvEnd)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        #endregion
     }
 
     public enum GamePhase

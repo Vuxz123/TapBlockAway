@@ -76,15 +76,6 @@ namespace com.ethnicthv.Game.Data
             }
         }
         
-        public void UpdateSkinProgress(int skinId, float progress)
-        {
-            if (Mathf.Approximately(progress, 1))
-            {
-                skinProgressData.UnlockSkin(skinId);
-            }
-            skinProgressData.SetSkinProgress(skinId, progress);
-        }
-        
         private bool LoadGameProgress()
         {
             if (!File.Exists(_gameProgressFilePath)) return false;
@@ -109,6 +100,56 @@ namespace com.ethnicthv.Game.Data
         #endregion
         
         #region Skin Progress
+        
+        /// <summary>
+        /// UpdateSkinProgress is called when the game level is End.
+        /// </summary>
+        public void UpdateSkinProgress()
+        {
+            foreach (var (skinId, config) in GameInternalSetting.SkinProgressConfigs)
+            {
+                SkinProgressUpdater.Update(skinId, config);
+            }
+        }
+        
+        public void UpdateGatchaSkin(int skinId)
+        {
+            var config = GameInternalSetting.SkinProgressConfigs[skinId];
+            if (config.Type == GameInternalSetting.SkinProgressType.Gatcha)
+            {
+                SkinProgressUpdater.Update(skinId, config);
+            }
+            else
+            {
+                Debug.LogError("SkinId is not Gacha Type");
+            }
+        }
+        
+        public void UpdatePurchaseSkin(int skinId)
+        {
+            var config = GameInternalSetting.SkinProgressConfigs[skinId];
+            if (config.Type == GameInternalSetting.SkinProgressType.Purchase)
+            {
+                SkinProgressUpdater.Update(skinId, config);
+            }
+            else
+            {
+                Debug.LogError("SkinId is not Purchase Type");
+            }
+        }
+        
+        public void UpdateAdsSkin(int skinId)
+        {
+            var config = GameInternalSetting.SkinProgressConfigs[skinId];
+            if (config.Type == GameInternalSetting.SkinProgressType.Ads)
+            {
+                SkinProgressUpdater.Update(skinId, config);
+            }
+            else
+            {
+                Debug.LogError("SkinId is not Ads Type");
+            }
+        }
 
         private bool LoadSkinProgress()
         {

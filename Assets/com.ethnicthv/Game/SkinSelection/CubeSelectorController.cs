@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using cm.ethnicthv.Game.Input.Home;
-using com.ethnicthv.Game.Cube;
 using com.ethnicthv.Game.Data;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -120,17 +118,23 @@ namespace com.ethnicthv.Game.Home
             var skin = SkinSelectionManager.instance.skinDatabase.GetSkin(currentCubeIndex);
             
             titleText.text = skin.name;
-            titleText.color = Color.white.WithAlpha(1 - 2 * Mathf.Abs(dis2Current));
+            var c = Color.white;
+            c.a = 1 - 2 * Mathf.Abs(dis2Current);
+            titleText.color = c;
         }
 
         private void UpdateSkinDetail(int current, int prev, float dis2Current, int dir)
         {
             //update skin detail
-            var maxAlpha = SaveManager.instance.skinProgressData.IsSkinUnlocked(currentCubeIndex) ? 0 : 1;
             
             var interval = 1 - 2 * Mathf.Abs(dis2Current);
+            
+            // Note: update lock icon
+            var maxAlpha = SaveManager.instance.skinProgressData.IsSkinUnlocked(currentCubeIndex) ? 0 : 1;
             var alpha = Mathf.Lerp(0, maxAlpha, interval);
-            skinLock.color = Color.white.WithAlpha(alpha);
+            var c = Color.white;
+            c.a = alpha;
+            skinLock.color = c;
         }
         
         private void UpdateAlpha(int current, int prev, float dis2Current, int dir)
