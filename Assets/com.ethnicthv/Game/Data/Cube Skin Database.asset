@@ -18,7 +18,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: ed4166b1c469c4f45a8a00e446f0cb57, type: 2}
   - name: Skin 1
     mesh: {fileID: -5495902117074765545, guid: f9b7043b01b40de468e0f8ea85796d4a, type: 3}
-    material: {fileID: 2100000, guid: ed4166b1c469c4f45a8a00e446f0cb57, type: 2}
+    material: {fileID: 2100000, guid: c3ee3544fd563e74db2ace87721223d4, type: 2}
   - name: Skin 2
     mesh: {fileID: -5495902117074765545, guid: f9b7043b01b40de468e0f8ea85796d4a, type: 3}
     material: {fileID: 2100000, guid: ed4166b1c469c4f45a8a00e446f0cb57, type: 2}
