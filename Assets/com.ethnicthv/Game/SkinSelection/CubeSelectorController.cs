@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using cm.ethnicthv.Game.Input.Home;
+using com.ethnicthv.Game.Cube;
 using com.ethnicthv.Game.Data;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -155,6 +156,7 @@ namespace com.ethnicthv.Game.Home
             var distance = Mathf.Abs(_currentCubeIndex - currentCubeIndex);
             if (distance > 0.1f) return;
             Debug.Log("Select: " + currentCubeIndex);
+            CubeManager.instance.currentSkin = SkinSelectionManager.instance.skinDatabase.GetSkin(currentCubeIndex);
         }
 
         /// <summary>

@@ -5,9 +5,11 @@ using System.Collections;
 using System.Collections.Generic;
 using com.ethnicthv.Game.Cube;
 using com.ethnicthv.Game.Data;
+using com.ethnicthv.Game.Home;
 using com.ethnicthv.Game.Input.GamePlay;
 using com.ethnicthv.Game.LevelSelection;
 using com.ethnicthv.Game.Map;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -22,12 +24,13 @@ namespace com.ethnicthv.Game.Gameplay
 
         [Space(10)] [Header("Setup")] public MapManager mapManager;
         public GameplayUIController gameplayUIController;
-        [SerializeField] private GameObject disableAble;
+        [SerializeField] private DisableAble disableAble;
         [SerializeField] private NewGamePlayInputListener newGamePlayInputListener;
         [SerializeField] private GamePlayInputEventSystem gamePlayInputEventSystem;
         public CubeManager cubeManager;
         public CameraController cameraController;
         public GameControlTutorialController gameControlTutorialController;
+        public AnimatedInOutController animatedInOutController;
 
         // <-- internal properties -->
         public static GamePlayManager instance { get; private set; }
@@ -56,7 +59,11 @@ namespace com.ethnicthv.Game.Gameplay
 
         // <-- utility properties -->
         public int displayLevel => level + 1;
-        //
+        // <-- end -->
+
+        // <-- cache -->
+        public float cameraDistCache;
+        // <-- end -->
 
         private void Awake()
         {
@@ -69,11 +76,25 @@ namespace com.ethnicthv.Game.Gameplay
 #else
             newGamePlayInputListener = gameObject.GetComponent<NewGamePlayInputListener>();
 #endif
+            disableAble.onDisable += () =>
+            {
+                Debug.Log("GamePlayManager Disable");
+                cameraDistCache = cameraController.cameraDist;
+            };
+
+            disableAble.onEnable += () =>
+            {
+                Debug.Log("GamePlayManager Enable");
+                cameraController.cameraDist = cameraDistCache;
+            };
         }
 
         private void Start()
         {
             Debug.Log("GamePlayManager Start");
+
+            CubeManager.instance.currentSkin =
+                SkinSelectionManager.instance.skinDatabase.GetSkin(SaveManager.instance.playerData.currentSkin);
 
 #if TEST_GAMEPLAY
             category = SaveManager.instance.gameProgressData.currentCategory;
@@ -86,22 +107,23 @@ namespace com.ethnicthv.Game.Gameplay
 
         public void Disable()
         {
-            disableAble.SetActive(false);
+            disableAble.Disable();
         }
 
         public void Enable()
         {
-            disableAble.SetActive(true);
+            disableAble.Enable();
         }
 
-        public void AnimatedDisable()
+        public void AnimatedDisable(Action onComplete = null)
         {
-            
+            animatedInOutController.AnimatedOut(onComplete);
         }
 
         public void AnimatedEnable()
         {
-            
+            ColorUtility.TryParseHtmlString("#6CAB6D", out var color);
+            animatedInOutController.AnimatedIn(color);
         }
 
         #endregion
@@ -109,11 +131,11 @@ namespace com.ethnicthv.Game.Gameplay
         private void OnFinishLevel()
         {
             Debug.Log("Finish Level");
-            
+
             HideTapTutorial();
             HideRotateTutorial();
             HideZoomTutorial();
-            
+
             var isLastLevelInGroup = GameInternalSetting.IsLastLevelInGroup(category, currentLevel, out var levelGroup);
             var temp = levelGroup;
             if (isLastLevelInGroup)
@@ -181,6 +203,16 @@ namespace com.ethnicthv.Game.Gameplay
             if (GameManager.instance.TryChangeState(ScreenState.LevelSelection, out var main))
             {
                 LevelSelectorManager.instance.ShowLevelSelector(main);
+            }
+        }
+
+        public void OpenSkinSelection()
+        {
+            if (State.gamePhase is not (GamePhase.Playing or GamePhase.Start)) return;
+            Disable();
+            if (GameManager.instance.TryChangeState(ScreenState.SkinSelection, out var main))
+            {
+                SkinSelectionManager.instance.ShowSkinSelection(main);
             }
         }
 
@@ -253,7 +285,7 @@ namespace com.ethnicthv.Game.Gameplay
         {
             var config =
                 GameInternalSetting.FeatureLockTutorialConfigs[GameInternalSetting.TutorialType.Move2Zoom];
-            
+
             foreach (var (enableCat, enableLvStart, enableLvEnd) in config)
             {
                 if (category == enableCat && currentLevel >= enableLvStart && currentLevel < enableLvEnd)

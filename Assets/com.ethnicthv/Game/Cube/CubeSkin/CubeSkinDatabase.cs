@@ -1,8 +1,7 @@
 using System.Linq;
-using com.ethnicthv.Game.Cube;
 using UnityEngine;
 
-namespace com.ethnicthv.Game.Home
+namespace com.ethnicthv.Game.Cube.CubeSkin
 {
     [CreateAssetMenu(fileName = "Cube Skin Database", menuName = "Database", order = 0)]
     public class CubeSkinDatabase : ScriptableObject

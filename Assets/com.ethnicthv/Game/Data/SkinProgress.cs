@@ -33,7 +33,10 @@ namespace com.ethnicthv.Game.Data
         {
             return new SkinProgress
             {
-                skinUnlocked = new Dictionary<int, bool>(),
+                skinUnlocked = new Dictionary<int, bool>
+                {
+                    {0, true}
+                },
                 skinProgressing = new Dictionary<int, float>()
             };
         }

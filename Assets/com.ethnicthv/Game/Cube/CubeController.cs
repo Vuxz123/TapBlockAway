@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using com.ethnicthv.Game.Cube.CubeSkin;
 using com.ethnicthv.Game.Gameplay;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -59,20 +60,25 @@ namespace com.ethnicthv.Game.Cube
         private (int, int, int) _key;
         [SerializeField] private CubeDirection _direction;
 
+        private Color _cubeColorCache = Color.white;
         public Color cubeColor
         {
-            get => meshRenderer.sharedMaterial.color;
-            set => meshRenderer.sharedMaterial.color = value;
+            get => _cubeColorCache;
+            set
+            {
+                _cubeColorCache = value;
+                meshRenderer.material.SetColor(Color1, value);
+            }
         }
 
         public float cubeAlpha
         {
-            get => meshRenderer.material.color.a;
+            get => cubeColor.a;
             set
             {
-                var color = meshRenderer.material.color;
+                var color = cubeColor;
                 color.a = value;
-                meshRenderer.material.color = color;
+                cubeColor = color;
             }
         }
 
@@ -114,7 +120,7 @@ namespace com.ethnicthv.Game.Cube
             foreach (var c in Colors)
             {
                 if (nearColor.Contains(c)) continue;
-                meshRenderer.material.color = c;
+                cubeColor = c;
                 break;
             }
         }
@@ -127,6 +133,7 @@ namespace com.ethnicthv.Game.Cube
         public void SetSkin(Skin skin)
         {
             meshRenderer.material = new Material(skin.material);
+            meshRenderer.material.SetColor(Color1, cubeColor);
             meshFilter.mesh = skin.mesh;
         }
 

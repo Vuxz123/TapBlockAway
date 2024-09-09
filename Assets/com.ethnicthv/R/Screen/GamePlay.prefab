@@ -884,7 +884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.42352945, g: 0.67058825, b: 0.427451, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1338,6 +1338,7 @@ GameObject:
   - component: {fileID: 5296228883961836398}
   - component: {fileID: 2461307865186075077}
   - component: {fileID: 945023697671670826}
+  - component: {fileID: 4861075942115085562}
   m_Layer: 0
   m_Name: Disable-able
   m_TagString: Untagged
@@ -1399,6 +1400,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c6c28caf4f47b382e63e39278ad1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 945023697671670826}
+  cover: {fileID: 1630557677354667251}
 --- !u!95 &945023697671670826
 Animator:
   serializedVersion: 5
@@ -1407,7 +1410,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7295681301797985049}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: c00d7f117fa171241b8f7ac074ed9c32, type: 2}
   m_CullingMode: 0
@@ -1420,6 +1423,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4861075942115085562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7295681301797985049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b164940bb5284457bdfd110369437688, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7380114872593905642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,13 +1523,15 @@ MonoBehaviour:
   tapCooldown: 0.5
   mapManager: {fileID: 4499516146788302776}
   gameplayUIController: {fileID: 4590736027440965253}
-  disableAble: {fileID: 7295681301797985049}
+  disableAble: {fileID: 4861075942115085562}
   newGamePlayInputListener: {fileID: 3375416289714002423}
   gamePlayInputEventSystem: {fileID: 5296228883961836398}
   cubeManager: {fileID: 7532107918623957199}
   cameraController: {fileID: 0}
   gameControlTutorialController: {fileID: 4964684797252287186}
+  animatedInOutController: {fileID: 2461307865186075077}
   mapSize: 10
+  cameraDistCache: 0
 --- !u!114 &4590736027440965253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1617,6 +1634,7 @@ GameObject:
   - component: {fileID: 5317405213170737504}
   - component: {fileID: 9111511203174750148}
   - component: {fileID: 602539907541718928}
+  - component: {fileID: 8714083960897707918}
   m_Layer: 0
   m_Name: Skin
   m_TagString: Untagged
@@ -1681,6 +1699,62 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8714083960897707918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7663343995639931410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 602539907541718928}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3529774001547808244}
+        m_TargetAssemblyTypeName: com.ethnicthv.Game.Gameplay.GamePlayManager, Assembly-CSharp
+        m_MethodName: OpenSkinSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7684349865432966874
 GameObject:
   m_ObjectHideFlags: 0

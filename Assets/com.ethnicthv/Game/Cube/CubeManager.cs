@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using com.ethnicthv.Game.Cube.CubeSkin;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -20,6 +21,21 @@ namespace com.ethnicthv.Game.Cube
         public int disableLayer = 0;
 
         public float cubeMoveDuration => cubeMoveDistance / (float)cubeMoveSpeed;
+        
+        private Skin _currentSkin;
+        
+        public Skin currentSkin
+        {
+            get => _currentSkin;
+            set
+            {
+                _currentSkin = value;
+                foreach (var (_, cube) in _cubeList)
+                {
+                    cube.SetSkin(value);
+                }
+            }
+        }
 
         public int bound
         {
@@ -87,6 +103,7 @@ namespace com.ethnicthv.Game.Cube
             
             cube.transform.position = new Vector3(x, y, z);
             cube.Setup(key, GetNearbyColor(x, y, z), direction);
+            cube.SetSkin(currentSkin);
             _cubeList.Add(key, cube);
             
             _cubeCount++;
@@ -134,6 +151,7 @@ namespace com.ethnicthv.Game.Cube
 
         public void ReAddCube(CubeController cube)
         {
+            cube.SetSkin(currentSkin);
             _cubeList.TryAdd(cube.key, cube);
         }
         

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,36 +13,44 @@ namespace com.ethnicthv.Game.Gameplay
         private static readonly int In = Animator.StringToHash("In");
         private static readonly int Out = Animator.StringToHash("Out");
 
-        public void AnimatedIn(Color coverColor)
+        private Action _onComplete;
+
+        public void AnimatedIn(Color coverColor, Action onComplete = null)
         {
+            _onComplete = onComplete;
             var c = coverColor;
             c.a = 1;
             cover.color = c;
             
             cover.gameObject.SetActive(true);
             
-            animator.SetTrigger(In);
+            animator.SetBool(Out, false);
+            animator.SetBool(In, true);
         }
         
-        public void AnimatedOut()
+        public void AnimatedOut(Action onComplete = null)
         {
+            _onComplete = onComplete;
             var c = cover.color;
             c.a = 0;
             cover.color = c;
             
             cover.gameObject.SetActive(true);
             
-            animator.SetTrigger(Out);
+            animator.SetBool(In, false);
+            animator.SetBool(Out, true);
         }
 
         public void OnAnimatedOutComplete()
         {
+            _onComplete?.Invoke();
             cover.gameObject.SetActive(false);
         }
         
         public void OnAnimatedInComplete()
         {
             cover.gameObject.SetActive(false);
+            _onComplete?.Invoke();
         }
     }
 }
