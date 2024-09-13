@@ -8,6 +8,9 @@ namespace com.ethnicthv.Game.Cube.CubeSkin
     {
         public string name;
         public Mesh mesh;
+        public Mesh arrowMesh;
         public Material material;
+        public Material arrowMaterial;
+        public float scale = 1;
     }
 }

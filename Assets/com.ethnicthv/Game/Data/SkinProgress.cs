@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace com.ethnicthv.Game.Data
 {
@@ -35,7 +36,8 @@ namespace com.ethnicthv.Game.Data
             {
                 skinUnlocked = new Dictionary<int, bool>
                 {
-                    {0, true}
+                    {0, true},
+                    {1, true}
                 },
                 skinProgressing = new Dictionary<int, float>()
             };

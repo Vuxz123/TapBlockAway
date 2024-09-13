@@ -56,6 +56,15 @@ namespace com.ethnicthv.Game
                 mainCamera.transform.localPosition = new Vector3(0, 0, cameraDistance);
             }
         }
+        
+        public float cameraDistIgnoreClamp
+        {
+            set
+            {
+                cameraDistance = value;
+                mainCamera.transform.localPosition = new Vector3(0, 0, cameraDistance);
+            }
+        }
 
         public float maxCameraDist
         {

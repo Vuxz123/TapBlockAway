@@ -8,6 +8,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace com.ethnicthv.Game.Cube
@@ -33,11 +34,13 @@ namespace com.ethnicthv.Game.Cube
     {
         public float appearDuration = 0.5f;
         [SerializeField] private MeshFilter meshFilter;
+        [SerializeField] private MeshFilter arrowFilter;
         [SerializeField] private MeshRenderer meshRenderer;
+        [SerializeField] private MeshRenderer arrowRenderer;
         [SerializeField] private CubeState state = CubeState.Static;
-        
+
         private Tween _delayMoveFade;
-        private TweenerCore<Color,Color,ColorOptions> _moveFade;
+        private TweenerCore<Color, Color, ColorOptions> _moveFade;
 
         public CubeDirection direction
         {
@@ -61,13 +64,19 @@ namespace com.ethnicthv.Game.Cube
         [SerializeField] private CubeDirection _direction;
 
         private Color _cubeColorCache = Color.white;
+
         public Color cubeColor
         {
             get => _cubeColorCache;
             set
             {
                 _cubeColorCache = value;
-                meshRenderer.material.SetColor(Color1, value);
+                if (meshRenderer.material.HasProperty(Color2))
+                    meshRenderer.material.SetColor(Color2, value);
+                else if (meshRenderer.material.HasProperty(Color1))
+                    meshRenderer.material.SetColor(Color1, value);
+                else
+                    meshRenderer.material.color = value;
             }
         }
 
@@ -79,6 +88,28 @@ namespace com.ethnicthv.Game.Cube
                 var color = cubeColor;
                 color.a = value;
                 cubeColor = color;
+                if (value < 0.9f)
+                {
+                    meshRenderer.material.SetTransparent();
+                }
+                else
+                {
+                    meshRenderer.material.SetOpacity();
+                }
+                if (arrowRenderer.material)
+                {
+                    var c = arrowRenderer.material.GetColor(Color2);
+                    c.a = value;
+                    arrowRenderer.material.SetColor(Color2, c);
+                    if (value < 0.9f)
+                    {
+                        arrowRenderer.material.SetTransparent();
+                    }
+                    else
+                    {
+                        arrowRenderer.material.SetOpacity();
+                    }
+                }
             }
         }
 
@@ -110,7 +141,7 @@ namespace com.ethnicthv.Game.Cube
         {
             _key = cubeKey;
             gameObject.name = $"Cube_{cubeKey.Item1}_{cubeKey.Item2}_{cubeKey.Item3}_{dir}";
-            SetupColor(nearColor);
+            //SetupColor(nearColor);
             SetupDirection(dir);
             _direction = dir;
         }
@@ -132,9 +163,13 @@ namespace com.ethnicthv.Game.Cube
 
         public void SetSkin(Skin skin)
         {
+            meshRenderer.transform.localScale = Vector3.one * skin.scale;
             meshRenderer.material = new Material(skin.material);
-            meshRenderer.material.SetColor(Color1, cubeColor);
+            cubeColor = cubeColor;
             meshFilter.mesh = skin.mesh;
+            arrowFilter.mesh = skin.arrowMesh;
+            arrowRenderer.material = skin.arrowMaterial ? new Material(skin.arrowMaterial) : null;
+            cubeAlpha = 1;
         }
 
         #endregion
@@ -179,8 +214,8 @@ namespace com.ethnicthv.Game.Cube
 
             // Note: start the fade out animation
             _moveFade = DOTween.ToAlpha(
-                () => meshRenderer.material.GetColor(Color1),
-                x => meshRenderer.material.SetColor(Color1, x),
+                () => cubeColor,
+                x => cubeColor = x,
                 0, duration
             ).OnComplete(() =>
             {
@@ -266,7 +301,7 @@ namespace com.ethnicthv.Game.Cube
 
         private void Bounce(Vector3 dir, bool recursive = true)
         {
-            if (cubeState == CubeState.Bouncing) return;
+            if (cubeState is CubeState.Bouncing or CubeState.Moving) return;
             cubeState = CubeState.Bouncing;
             transform.DOKill();
             transform.DOLocalMove(transform.localPosition + dir * 0.2f, 0.2f)
@@ -311,6 +346,8 @@ namespace com.ethnicthv.Game.Cube
             };
 
         private static readonly int Color1 = Shader.PropertyToID("_Color");
+        private static readonly int Color2 = Shader.PropertyToID("_BaseColor");
+        private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
         #endregion
     }

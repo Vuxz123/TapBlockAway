@@ -110,6 +110,8 @@ namespace com.ethnicthv.Game.Data
             {
                 SkinProgressUpdater.Update(skinId, config);
             }
+            
+            SaveSkinProgress();
         }
         
         public void UpdateGatchaSkin(int skinId)
@@ -174,6 +176,12 @@ namespace com.ethnicthv.Game.Data
         #endregion
         
         #region Player Data
+        
+        public void SetPlayerSkin(int skinId)
+        {
+            playerData.currentSkin = skinId;
+            SavePlayerData();
+        }
         
         private bool LoadPlayerData()
         {

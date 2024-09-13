@@ -14,6 +14,8 @@ namespace com.ethnicthv.Game.Home
 {
     public class CubeSelectorController : MonoBehaviour
     {
+        public static readonly Color Transparent = new Color(1, 1, 1, 0);
+        
         [Header("Setup")] 
         [SerializeField] private Transform cubeContainer;
         [SerializeField] private GameObject cubePrefab;
@@ -21,6 +23,7 @@ namespace com.ethnicthv.Game.Home
 
         [Header("Cube Skin Detail")] 
         [SerializeField] private Image skinLock;
+        [SerializeField] private Image skinSelected;
 
         private HomeInput _homeInput;
         private TweenerCore<Vector3, Vector3, DG.Tweening.Plugins.Options.VectorOptions> _dragBounceTween;
@@ -116,7 +119,7 @@ namespace com.ethnicthv.Game.Home
         private void UpdateTitle(int current, int prev, float dis2Current, int dir)
         {
             //update title
-            var skin = SkinSelectionManager.instance.skinDatabase.GetSkin(currentCubeIndex);
+            var skin = SkinSelectionManager.instance.skinDatabase.GetSkin(current);
             
             titleText.text = skin.name;
             var c = Color.white;
@@ -130,12 +133,12 @@ namespace com.ethnicthv.Game.Home
             
             var interval = 1 - 2 * Mathf.Abs(dis2Current);
             
-            // Note: update lock icon
-            var maxAlpha = SaveManager.instance.skinProgressData.IsSkinUnlocked(currentCubeIndex) ? 0 : 1;
-            var alpha = Mathf.Lerp(0, maxAlpha, interval);
+            var alpha = Mathf.Lerp(0, 1, interval);
             var c = Color.white;
             c.a = alpha;
-            skinLock.color = c;
+            skinLock.color = !SaveManager.instance.skinProgressData.IsSkinUnlocked(current) ? c : Transparent;
+            
+            skinSelected.color = SaveManager.instance.playerData.currentSkin == current ? c : Transparent;
         }
         
         private void UpdateAlpha(int current, int prev, float dis2Current, int dir)
@@ -153,9 +156,12 @@ namespace com.ethnicthv.Game.Home
 
         public void OnSelect()
         {
-            var distance = Mathf.Abs(_currentCubeIndex - currentCubeIndex);
+            var current = currentCubeIndex;
+            if (!SaveManager.instance.skinProgressData.IsSkinUnlocked(current)) return;
+            var distance = Mathf.Abs(current - current);
             if (distance > 0.1f) return;
-            Debug.Log("Select: " + currentCubeIndex);
+            Debug.Log("Select: " + current);
+            SaveManager.instance.playerData.currentSkin = current;
             CubeManager.instance.currentSkin = SkinSelectionManager.instance.skinDatabase.GetSkin(currentCubeIndex);
         }
 

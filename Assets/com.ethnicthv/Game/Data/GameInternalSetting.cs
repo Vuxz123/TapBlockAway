@@ -70,7 +70,7 @@ namespace com.ethnicthv.Game.Data
             public readonly int PurchasePrice;
             public readonly Func<bool> Condition;
 
-            public SkinProgressConfig(SkinProgressType type, int levelUnlock, int purchasePrice, Func<bool> condition)
+            public SkinProgressConfig(SkinProgressType type, int levelUnlock = 0, int purchasePrice = 100, Func<bool> condition = null)
             {
                 Type = type;
                 LevelUnlock = levelUnlock;
@@ -81,11 +81,14 @@ namespace com.ethnicthv.Game.Data
         
         public static readonly Dictionary<int, SkinProgressConfig> SkinProgressConfigs = new()
         {
-            {0, new SkinProgressConfig(SkinProgressType.Ads, 0, 0, () => true)},
-            {1, new SkinProgressConfig(SkinProgressType.PlayProgress, 10, 0, () => true)},
-            {2, new SkinProgressConfig(SkinProgressType.Purchase, 0, 1000, () => true)},
-            {3, new SkinProgressConfig(SkinProgressType.Gatcha, 0, 0, () => true)},
-            {4, new SkinProgressConfig(SkinProgressType.Gift, 0, 0, () => SaveManager.instance.playerData.HasBadge(0))}
+            // {0, new SkinProgressConfig(SkinProgressType.Ads, 0, 0, () => true)},
+            // {1, new SkinProgressConfig(SkinProgressType.PlayProgress, 10, 0, () => true)},
+            // {2, new SkinProgressConfig(SkinProgressType.Purchase, 0, 1000, () => true)},
+            // {3, new SkinProgressConfig(SkinProgressType.Gatcha, 0, 0, () => true)},
+            // {4, new SkinProgressConfig(SkinProgressType.Gift, 0, 0, () => SaveManager.instance.playerData.HasBadge(0))}
+            {2, new SkinProgressConfig(SkinProgressType.PlayProgress, 10)},
+            {3, new SkinProgressConfig(SkinProgressType.PlayProgress, 20)},
+            {4, new SkinProgressConfig(SkinProgressType.PlayProgress, 40)}
         };
         
         public static ReadOnlyCollection<int> GetSkinOfType(SkinProgressType type)

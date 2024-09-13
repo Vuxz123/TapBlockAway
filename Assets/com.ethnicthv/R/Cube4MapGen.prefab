@@ -69,8 +69,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appearDuration: 0.5
+  meshFilter: {fileID: 0}
+  arrowFilter: {fileID: 0}
   meshRenderer: {fileID: 5944716885831725644}
+  arrowRenderer: {fileID: 0}
   state: 1
+  _direction: 0
 --- !u!114 &673440337106212853
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ namespace com.ethnicthv.Game.Home
             disableAble.onEnable += () =>
             {
                 Debug.Log("SkinSelectionManager Enable");
-                cameraController.cameraDist = -4;
+                cameraController.cameraDistIgnoreClamp = -4;
                 cameraController.cameraRoot.rotation = Quaternion.Euler(30, 225, 0);
             };
         }
