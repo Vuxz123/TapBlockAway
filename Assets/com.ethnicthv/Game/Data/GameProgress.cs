@@ -12,6 +12,12 @@ namespace com.ethnicthv.Game.Data
         // Note: <category, <levelGroup, lastUnlockedLevel>>
         public Dictionary<int, Dictionary<int, int>> categoryProgress;
         
+        public void UnlockCategory(int category)
+        {
+            if (categoryProgress.ContainsKey(category)) return;
+            categoryProgress.Add(category, new Dictionary<int, int>{{0,0}});
+        }
+        
         public int GetNumberOfCompletedLevels()
         {
             var count = categoryProgress

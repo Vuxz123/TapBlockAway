@@ -137,5 +137,26 @@ namespace com.ethnicthv.Game.Data
         }
 
         #endregion
+
+        #region Game Category Config
+        
+        // Note: <(category, level), new category>
+        public static readonly Dictionary<(int, int), int> LevelUnlockNewCategory = new()
+        {
+            {(0, 10), 1},
+            {(1, 10), 2}
+        };
+
+        #endregion
+
+        #region Challenge Config
+        
+        // Note: <(category, level), challenge level>
+        public static readonly Dictionary<(int, int), int> ChallengeLevel = new()
+        {
+            {(0,1), 0}
+        };
+
+        #endregion
     }
 }

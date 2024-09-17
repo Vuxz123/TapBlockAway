@@ -195,7 +195,6 @@ namespace com.ethnicthv.Game.LevelSelection
                         }
                     }
                     
-                    Debug.Log("Level Group: " + i + " Start: " + start + " Max: " + maxLevel + " Level: " + level);
                     levelGroups[i].SetupLevelGroup(
                         this, !hasLevelProgress,
                         start, maxLevel, level, () => { OpenLevelGroup(start, maxLevel, level); });

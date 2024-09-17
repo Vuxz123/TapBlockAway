@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using com.ethnicthv.Game.Cube;
 using com.ethnicthv.Game.Data;
 using com.ethnicthv.Game.Home;
+using com.ethnicthv.Game.Impl;
 using com.ethnicthv.Game.Input.GamePlay;
 using com.ethnicthv.Game.LevelSelection;
 using com.ethnicthv.Game.Map;
@@ -135,17 +136,11 @@ namespace com.ethnicthv.Game.Gameplay
             HideTapTutorial();
             HideRotateTutorial();
             HideZoomTutorial();
-
-            var isLastLevelInGroup = GameInternalSetting.IsLastLevelInGroup(category, currentLevel, out var levelGroup);
-            var temp = levelGroup;
-            if (isLastLevelInGroup)
-            {
-                SaveManager.instance.UpdateCompleteLevelGroup(category, levelGroup);
-                temp++;
-            }
-
-            SaveManager.instance.UpdateGameProgress(category, temp, currentLevel);
-            SaveManager.instance.SaveGameProgress();
+            
+            EventSystem.instance.TriggerEvent(new LevelFinishEvent(category, level));
+            
+            SaveManager.instance.UpdateGameProgress(category, currentLevel);
+            SaveManager.instance.UpdateSkinProgress();
             currentLevel++;
         }
 
@@ -155,7 +150,7 @@ namespace com.ethnicthv.Game.Gameplay
         // Note: Start Game will load the map of current level then load the map
 
         // Note: This function will be called when the game is started
-        // Note: Currently in Test so this function will be called in StartGame to continue the game
+        // Note: Currently in Test so this function is being called in StartGame to continue the game
         //      In the future, this function will be called after Win Game or Lose Game be closed
         private IEnumerator StartGameCoroutine()
         {
