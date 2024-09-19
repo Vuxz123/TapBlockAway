@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using com.ethnicthv.Game.Cube;
 using com.ethnicthv.Game.Data;
+using com.ethnicthv.Game.GameEnd;
 using com.ethnicthv.Game.Home;
 using com.ethnicthv.Game.Impl;
 using com.ethnicthv.Game.Input.GamePlay;
@@ -132,6 +133,8 @@ namespace com.ethnicthv.Game.Gameplay
         private void OnFinishLevel()
         {
             Debug.Log("Finish Level");
+            
+            State.gamePhase = GamePhase.GameEnd;
 
             HideTapTutorial();
             HideRotateTutorial();
@@ -141,10 +144,17 @@ namespace com.ethnicthv.Game.Gameplay
             
             SaveManager.instance.UpdateGameProgress(category, currentLevel);
             SaveManager.instance.UpdateSkinProgress();
-            currentLevel++;
         }
 
         #region Control Function
+        
+        public void NextLevel()
+        {
+            if (State.isGameEnd)
+            {
+                currentLevel++;
+            }
+        }
 
         // <-- Start Game -->
         // Note: Start Game will load the map of current level then load the map
@@ -174,8 +184,6 @@ namespace com.ethnicthv.Game.Gameplay
             PrepareGame();
         }
 
-        #endregion
-
         public void RestartGame()
         {
             if (!State.isPlaying) return;
@@ -191,6 +199,8 @@ namespace com.ethnicthv.Game.Gameplay
             yield return new WaitForSeconds(1f);
             mapManager.ShowMap(() => { State.gamePhase = GamePhase.Playing; });
         }
+
+        #endregion
 
         public void OpenLevelSelector()
         {
@@ -210,6 +220,16 @@ namespace com.ethnicthv.Game.Gameplay
                 SkinSelectionManager.instance.ShowSkinSelection(main);
             }
         }
+        
+        public void OpenGameEnd()
+        {
+            if (State.gamePhase is not GamePhase.GameEnd) return;
+            Disable();
+            if (GameManager.instance.TryChangeState(ScreenState.GameEnd, out var main))
+            {
+                GameEndManager.instance.ShowGameEnd(main);
+            }
+        }
 
         public class GameState
         {
@@ -217,9 +237,7 @@ namespace com.ethnicthv.Game.Gameplay
 
             public bool isPlaying => gamePhase == GamePhase.Playing;
 
-            public bool isGameOver => gamePhase == GamePhase.GameOver;
-
-            public bool isGameWin => gamePhase == GamePhase.GameWin;
+            public bool isGameEnd => gamePhase == GamePhase.GameEnd;
 
             public GamePhase gamePhase { get; protected internal set; }
         }
@@ -300,7 +318,6 @@ namespace com.ethnicthv.Game.Gameplay
         Start,
         Playing,
         Pause,
-        GameOver,
-        GameWin
+        GameEnd
     }
 }

@@ -39,6 +39,7 @@ namespace com.ethnicthv.Game
     {
         SkinSelection,
         LevelSelection,
-        GamePlay
+        GamePlay,
+        GameEnd
     }
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 09235b856bd694b4aa10074dc1b449c6
+guid: 1c9cfe803f4808541904e486b529d96a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,13 +136,139 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_0
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_0
       rect:
         serializedVersion: 2
-        x: 20
+        x: 23
+        y: 29
+        width: 467
+        height: 467
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b894f91b662bd044b573e16bd00938d
+      internalID: 482980636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_1
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 530
+        width: 236
+        height: 229
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59f1170f61e990b4e94e903a4904594d
+      internalID: 1516723605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_4
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 529
+        width: 234
+        height: 246
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4e23ffcd105449488829a544d7205bd
+      internalID: -678350110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_6
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 781
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a42b96deb03c28047be5c4cce625a919
+      internalID: -1274088076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_8
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 29
+        width: 467
+        height: 467
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcb6645b79aa4494590b53f2638efdc0
+      internalID: 1175461227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_21
+      rect:
+        serializedVersion: 2
+        x: 1055
+        y: 192
+        width: 466
+        height: 114
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6042a70a13d0353408276c175731f140
+      internalID: 1292743458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_22
+      rect:
+        serializedVersion: 2
+        x: 1566
         y: 24
-        width: 1031
-        height: 388
+        width: 219
+        height: 219
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,20 +276,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1da21d1d9e84fa740a1e916f9661e1a7
-      internalID: 1621375645
+      spriteID: 9fb7fdadb4b3e6a41b16e6cc046fd293
+      internalID: -2096061637
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_1
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_2
       rect:
         serializedVersion: 2
-        x: 1431
-        y: 1572
-        width: 143
-        height: 147
+        x: 1055
+        y: 29
+        width: 466
+        height: 114
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,20 +297,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1960db77525827249bcbc9b270ac5a35
-      internalID: 825843754
+      spriteID: e95c7780fc289b24187d8bc23afff052
+      internalID: 2066666247
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_2
+      name: sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_3
       rect:
         serializedVersion: 2
-        x: 24
-        y: 456
-        width: 460
-        height: 464
+        x: 1050
+        y: 350
+        width: 219
+        height: 219
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,134 +318,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1a45eba9a4d4a045b1a35a926039cf5
-      internalID: -1149456836
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_3
-      rect:
-        serializedVersion: 2
-        x: 1610
-        y: 0
-        width: 314
-        height: 550
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c0b5ba4079a4c49478ca96dd281b6ffa
-      internalID: -1125470358
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_4
-      rect:
-        serializedVersion: 2
-        x: 1753
-        y: 555
-        width: 62
-        height: 63
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 31, y: 0, z: 31, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9c672ace4112e08468c57be54d7e6785
-      internalID: -1831663493
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_7
-      rect:
-        serializedVersion: 2
-        x: 516
-        y: 433
-        width: 492
-        height: 69
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 32, y: 0, z: 33, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f73611ef77ba7c84d8f3d0583e493619
-      internalID: -1207346298
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_8
-      rect:
-        serializedVersion: 2
-        x: 933
-        y: 1571
-        width: 480
-        height: 58
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 56403020bbdc8e848aaf66ba57acdc73
-      internalID: 1563486407
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_9
-      rect:
-        serializedVersion: 2
-        x: 1501
-        y: 555
-        width: 126
-        height: 172
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 484dd9664aeb05f409e21a9c85683007
-      internalID: -1557125864
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_10
-      rect:
-        serializedVersion: 2
-        x: 1501
-        y: 732
-        width: 127
-        height: 139
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 91c87fbd378f4cd4891941f5e67a8d0b
-      internalID: 950426880
+      spriteID: 5b0bd671968a81c4cb7c7de70e67c3bf
+      internalID: 648874132
       vertices: []
       indices: 
       edges: []
@@ -327,7 +327,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 324c22dfb120d7a4f903f2cd367b9148
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -335,17 +335,48 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_0: 1621375645
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_1: 825843754
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_10: 950426880
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_2: -1149456836
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_3: -1125470358
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_4: -1831663493
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_5: -1779242103
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_6: 1914157481
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_7: -1207346298
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_8: 1563486407
-      sactx-0-2048x2048-Crunch-_ChallengesAtlas-92038df2_0_9: -1557125864
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_0: 482980636
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_1: 1516723605
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_10: 792788280
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_11: -1067725796
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_12: -1537248083
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_13: -454269884
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_14: -321646261
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_15: 973766154
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_16: 1190203565
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_17: 1231900113
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_18: 337890276
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_19: -982443065
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_2: 2066666247
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_20: 1713484515
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_21: 1292743458
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_22: -2096061637
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_23: 810669598
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_24: -242495788
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_25: -616074765
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_26: 1974132330
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_27: 238420939
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_28: 2004857924
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_29: -794817445
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_3: 648874132
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_30: -1897688323
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_31: 993532059
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_32: -608898825
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_33: 1768361678
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_34: -1495773993
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_35: 70037966
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_36: 88857881
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_37: -596629915
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_38: -290085453
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_39: -1096648666
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_4: -678350110
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_40: 1351426234
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_41: 251507502
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_5: 1990413428
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_6: -1274088076
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_7: 239175856
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_8: 1175461227
+      sactx-0-2048x1024-Crunch-Atlas-ee4e37df_0_9: 1546077855
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
