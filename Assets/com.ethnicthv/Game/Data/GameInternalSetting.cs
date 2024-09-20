@@ -18,8 +18,18 @@ namespace com.ethnicthv.Game.Data
                 (10, 50),
                 (50, 400)
             },
-            new List<(int, int)>(), // Normal
+            new List<(int, int)>() // Normal
+            {
+                (0, 10),
+                (10, 50),
+                (50, 400) 
+            },
             new List<(int, int)>() // Hard
+            {
+                (0, 10),
+                (10, 50),
+                (50, 400)
+            }
         };
         
         public static (int, int) FindLevelGroup(int category, int level)
@@ -143,8 +153,8 @@ namespace com.ethnicthv.Game.Data
         // Note: <(category, level), new category>
         public static readonly Dictionary<(int, int), int> LevelUnlockNewCategory = new()
         {
-            {(0, 10), 1},
-            {(1, 10), 2}
+            {(0, 9), 1},
+            {(1, 9), 2}
         };
 
         #endregion
@@ -155,6 +165,19 @@ namespace com.ethnicthv.Game.Data
         public static readonly Dictionary<(int, int), int> ChallengeLevel = new()
         {
             {(0,1), 0}
+        };
+
+        #endregion
+
+        #region Coin Progress Config
+        
+        public static readonly List<int> CoinProgress = new()
+        {
+            10,
+            20,
+            40,
+            80,
+            160
         };
 
         #endregion

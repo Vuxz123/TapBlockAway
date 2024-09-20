@@ -138,7 +138,7 @@ namespace com.ethnicthv.Game.Home
             c.a = alpha;
             skinLock.color = !SaveManager.instance.skinProgressData.IsSkinUnlocked(current) ? c : Transparent;
             
-            skinSelected.color = SaveManager.instance.playerData.currentSkin == current ? c : Transparent;
+            skinSelected.color = SaveManager.instance.playerData.IsCurrentSkin(current) ? c : Transparent;
         }
         
         private void UpdateAlpha(int current, int prev, float dis2Current, int dir)
@@ -161,7 +161,7 @@ namespace com.ethnicthv.Game.Home
             var distance = Mathf.Abs(current - current);
             if (distance > 0.1f) return;
             Debug.Log("Select: " + current);
-            SaveManager.instance.playerData.currentSkin = current;
+            SaveManager.instance.SetPlayerSkin(current);
             CubeManager.instance.currentSkin = SkinSelectionManager.instance.skinDatabase.GetSkin(currentCubeIndex);
         }
 

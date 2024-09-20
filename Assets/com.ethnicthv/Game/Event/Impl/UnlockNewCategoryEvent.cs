@@ -9,8 +9,9 @@ namespace com.ethnicthv.Game.Impl
         public readonly int FromLevel;
         public readonly int NewCategory;
         public readonly bool IsUpdateByCondition;
-        
-        public UnlockNewCategoryEvent(int fromCategory, int formLevel, int newCategory, bool isUpdateByCondition = true) : base(1)
+
+        public UnlockNewCategoryEvent(int fromCategory, int formLevel, int newCategory, bool isUpdateByCondition = true)
+            : base(1)
         {
             FromCategory = fromCategory;
             FromLevel = formLevel;

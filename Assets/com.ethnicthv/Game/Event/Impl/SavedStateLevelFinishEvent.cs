@@ -14,7 +14,8 @@ namespace com.ethnicthv.Game.Impl
         public readonly bool IsLastLevelInCategory;
 
         public SavedStateLevelFinishEvent(int category, int level, bool isLastLevelInGroup, int nextLevel,
-            int levelGroup, int nextLevelGroup, bool isLastLevelInCategory = false) : base(3)
+            int levelGroup, int nextLevelGroup, bool isLastLevelInCategory = false) 
+            : base(3)
         {
             Category = category;
             Level = level;

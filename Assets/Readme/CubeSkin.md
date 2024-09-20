@@ -24,3 +24,15 @@ Current implementation only support one large cube mesh. If you want to use mult
 The cube skin is assigned to the cube in the `CubeController` script. Cube now use a mesh, a material, and a color to display the cube. The Cube Color is the color of the cube. When you use 'SetSkin' method in the `CubeController`, it will assign the mesh, material to the cube, and color which was cache in CubeController will be assigned to the Cube.
 
 So if you want more complex skin with multiple mesh, material, and color, you will need to do it for every cube skin. Not needed part can be disabled by your code (this might take a lot to do). 
+
+## Skin Unlock Type
+Currently, skin unlock type has 5 types:
+- Progress: Unlock by progress
+- Purchase: Unlock by purchase
+- Ads: Unlock by watching ads
+- Gift: Unlock by gift
+- Event: Unlock by event
+
+Each type has its own function to unlock the skin, pls refer to the `SkinUnlockType`, `SkinProgressUpdater.cs` and `SaveManager.cs` for more information.
+
+__PS__: currently, only Progress has been implemented.

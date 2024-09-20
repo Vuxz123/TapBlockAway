@@ -8,7 +8,6 @@ namespace com.ethnicthv.Game.Impl
         public readonly int Category;
         public readonly int Level;
         
-        
         public LevelFinishEvent(int category, int level) : base(0)
         {
             Category = category;

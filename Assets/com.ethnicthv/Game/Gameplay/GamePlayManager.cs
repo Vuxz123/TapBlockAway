@@ -144,6 +144,8 @@ namespace com.ethnicthv.Game.Gameplay
             
             SaveManager.instance.UpdateGameProgress(category, currentLevel);
             SaveManager.instance.UpdateSkinProgress();
+            
+            OpenGameEnd();
         }
 
         #region Control Function

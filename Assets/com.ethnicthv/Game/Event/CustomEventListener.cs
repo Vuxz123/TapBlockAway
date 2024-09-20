@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace com.ethnicthv.Game
 {
@@ -18,6 +19,7 @@ namespace com.ethnicthv.Game
 
         public void OnEvent(Event obj)
         {
+            Debug.Log("Event triggered: " + obj.GetType());
             @event?.Invoke(obj);
         }
     }

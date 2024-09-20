@@ -69,25 +69,27 @@ namespace com.ethnicthv.Game.Data
             
             var oldLevelGroup = levelGroup;
             
+            UpdateCompleteLevelGroup(category, levelGroup);
+            if (GameInternalSetting.GameLevelFraction[category].Count == levelGroup + 1)
+            {
+                EventSystem.instance.TriggerEvent(new SavedStateLevelFinishEvent(category, level, true, nextLevel,
+                    oldLevelGroup, levelGroup,
+                    true));
+                // Unlock new category
+                gameProgressData.UnlockCategory(newCategory);
+                EventSystem.instance.TriggerEvent(new UnlockNewCategoryEvent(category, level, newCategory, false));
+                return;
+            }
+            
             if (isLastLevelInGroup)
             {
-                UpdateCompleteLevelGroup(category, levelGroup);
-                if (GameInternalSetting.GameLevelFraction[category].Count == levelGroup + 1)
-                {
-                    EventSystem.instance.TriggerEvent(new SavedStateLevelFinishEvent(category, level, true, nextLevel,
-                        oldLevelGroup, levelGroup,
-                        true));
-                    // Unlock new category
-                    gameProgressData.UnlockCategory(newCategory);
-                    EventSystem.instance.TriggerEvent(new UnlockNewCategoryEvent(category, level, newCategory, false));
-                    return;
-                }
-
                 levelGroup++;
             }
             
+            Debug.Log("isUnlockCategoryLevel: " + isUnlockCategoryLevel + " " + category + " " + level );
             if (isUnlockCategoryLevel)
             {
+                Debug.Log("Unlock New Category");
                 gameProgressData.UnlockCategory(newCategory);
                 EventSystem.instance.TriggerEvent(new UnlockNewCategoryEvent(category, level, newCategory));
             }
@@ -154,6 +156,10 @@ namespace com.ethnicthv.Game.Data
             SaveSkinProgress();
         }
 
+        /// <summary>
+        /// UpdateGatchaSkin is called when the player get a new skin from Gatcha. (TODO: need to implement Gatcha)
+        /// </summary>
+        /// <param name="skinId"></param>
         public void UpdateGatchaSkin(int skinId)
         {
             var config = GameInternalSetting.SkinProgressConfigs[skinId];
@@ -167,6 +173,10 @@ namespace com.ethnicthv.Game.Data
             }
         }
 
+        /// <summary>
+        /// UpdatePurchaseSkin is called when the player purchase a new skin. (TODO: need to implement Purchase)
+        /// </summary>
+        /// <param name="skinId"></param>
         public void UpdatePurchaseSkin(int skinId)
         {
             var config = GameInternalSetting.SkinProgressConfigs[skinId];
@@ -180,6 +190,10 @@ namespace com.ethnicthv.Game.Data
             }
         }
 
+        /// <summary>
+        /// UpdateAdsSkin is called when the player watch ads to get a new skin. (TODO: need to implement Ads)
+        /// </summary>
+        /// <param name="skinId"></param>
         public void UpdateAdsSkin(int skinId)
         {
             var config = GameInternalSetting.SkinProgressConfigs[skinId];
@@ -216,10 +230,22 @@ namespace com.ethnicthv.Game.Data
         #endregion
 
         #region Player Data
+        
+        public void RemovePlayerCoins(int amount)
+        {
+            playerData.RemoveCoins(amount);
+            SavePlayerData();
+        }
+        
+        public void AddPlayerCoins(int amount)
+        {
+            playerData.AddCoins(amount);
+            SavePlayerData();
+        }
 
         public void SetPlayerSkin(int skinId)
         {
-            playerData.currentSkin = skinId;
+            playerData.SetCurrentSkin(skinId);
             SavePlayerData();
         }
 

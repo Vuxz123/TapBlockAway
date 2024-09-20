@@ -16,6 +16,7 @@ namespace com.ethnicthv.Game.Data
         {
             if (categoryProgress.ContainsKey(category)) return;
             categoryProgress.Add(category, new Dictionary<int, int>{{0,0}});
+            EventSystem.instance.TriggerEvent(new CategoryUnlockEvent(category));
         }
         
         public int GetNumberOfCompletedLevels()
